@@ -18,7 +18,11 @@ const production =
 async function start() {
   await apollo.start();
   await middleware();
-  db.once('open', onMongoOpen);
+  db.once('open', () => {
+    app.listen(port, () => {
+      console.log(`Server open on port: ${port}`);
+    });
+  });
 }
 
 async function middleware() {
@@ -43,19 +47,6 @@ async function middleware() {
 
   // apply our REST routes
   app.use(routes(production));
-}
-
-async function onMongoOpen() {
-  const server = app.listen(port, () => {
-    console.log(`Server open on port: ${port}`);
-  });
-
-  // process closing hook will shut down stuff as gracefully as it can
-  process.on('exit', async () => {
-    server.close();
-    await apollo.stop();
-    await db.close();
-  });
 }
 
 start();
