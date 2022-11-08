@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import bcrypt from 'bcrypt';
 
 export const userSchema = new Schema({
   name: {
@@ -19,10 +20,24 @@ export const userSchema = new Schema({
   chats: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'chat'
+      ref: 'Chat'
     }
   ]
 });
+
+userSchema.pre('save', async function (next) {
+  if(this.isNew || this.isModified('password')) {
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+  }
+  next();
+});
+
+// compare the incoming password with the hashed password
+userSchema.methods.isCorrectPassword = async function (password) {
+  return bcrypt.compare(password, this.password);
+};
+
 
 export const User = model('User', userSchema);
 

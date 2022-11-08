@@ -9,12 +9,18 @@ export const chatSchema = new Schema({
   owner: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: 'user'
+    ref: 'User'
   },
+  users: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ],
   messages: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'message'
+      ref: 'Message'
     }
   ]
 });

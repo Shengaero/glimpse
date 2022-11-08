@@ -8,7 +8,7 @@ export const messageSchema = new Schema({
   author: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: 'user'
+    ref: 'User'
   },
   createdAt: {
     type: Date,
