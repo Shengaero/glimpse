@@ -1,5 +1,5 @@
 # environment
-
+**/dev
 **/.env
 
 ## do not ignore client env, we need it for create-react-app

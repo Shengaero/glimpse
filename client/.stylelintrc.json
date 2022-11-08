@@ -1,0 +1,17 @@
+{
+  "defaultSeverity": "warning",
+  "rules": {
+    "indentation": 2,
+    "no-eol-whitespace": true,
+    "no-duplicate-at-import-rules": [ true, { "severity": "error" } ]
+  },
+  "overrides": [
+    {
+      "files": [ "src/styles/**/*.css" ]
+    },
+    {
+      "files": [ "src/styles/**/*.scss" ],
+      "customSyntax": "postcss-scss"
+    }
+  ]
+}

@@ -16,6 +16,9 @@
 # Markdown
 *.md text eol=lf
 
+# LICENSE
+LICENSE text eol=crlf
+
 # Git Files
 *.gitattributes text eol=lf
 *.gitignore text eol=lf

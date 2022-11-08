@@ -1,0 +1,40 @@
+{
+  "name": "glimpse",
+  "version": "0.1.0",
+  "description": "A chat for when you just don't have the time to look around",
+  "private": true,
+  "author": "Kaidan Gustave",
+  "license": "Apache-2.0",
+  "scripts": {
+    "install": "npm run install:client && npm run install:server",
+    "install:client": "cd client && npm i",
+    "install:server": "cd server && npm i",
+
+    "start": "cd server && npm run start",
+    "start:dev": "concurrently \"npm run start:client:dev\" \"npm run build:server:dev\" \"npm run start:server:dev\"",
+    "start:client:dev": "cd client && npm run start:dev",
+    "start:server:dev": "cd server && npm run start:dev",
+
+    "build": "npm run clean && npm run build:client && npm run build:server",
+    "build:client": "cd client && npm run build",
+    "build:server": "cd server && npm run build",
+    "build:server:dev": "cd server && npm run build:dev",
+
+    "heroku-postbuild": "npm run build",
+
+    "clean": "node clean.js",
+    "mimic-heroku": "set MIMIC_HEROKU=true && npm run heroku-postbuild && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shengaero/glimpse.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Shengaero/glimpse/issues"
+  },
+  "homepage": "https://github.com/Shengaero/glimpse#readme",
+  "devDependencies": {
+    "concurrently": "^7.5.0",
+    "eslint": "^8.27.0"
+  }
+}
