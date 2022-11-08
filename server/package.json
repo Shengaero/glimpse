@@ -24,12 +24,14 @@
     "graphql": "^16.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.7.2",
+    "uuid": "^9.0.0",
     "ws": "^8.11.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/express-ws": "^3.0.1",
     "@types/jsonwebtoken": "^8.5.9",
+    "@types/uuid": "^8.3.4",
     "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.42.1",
     "@typescript-eslint/parser": "^5.42.1",
