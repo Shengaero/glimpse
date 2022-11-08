@@ -1,5 +1,6 @@
 import { AuthenticationError } from 'apollo-server-express';
 import { Chat, User } from '../../../models';
+import { signToken } from '../../../utils/auth';
 
 type CreateUserArgs = {
   name: String;
@@ -14,10 +15,11 @@ type LoginArgs = {
 
 type CreateChatArgs = {
   name: String;
+  owner: String;
 };
 
 const createToken = (user: any) => {
-  return ''; // TODO: Auth
+  return signToken(user);
 };
 
 export async function createUser(parent: any, args: CreateUserArgs) {
@@ -31,7 +33,7 @@ export async function createUser(parent: any, args: CreateUserArgs) {
 
 export async function login(parent: any, args: LoginArgs) {
   const user = await User.findOne({ email: args.email }).populate('chats');
-  if(!(await user.isCorrectPassword(args))) {
+  if(!(await user.isCorrectPassword(args.password))) {
     throw new AuthenticationError('Invalid login!');
   }
   const token = createToken(user);
@@ -42,5 +44,6 @@ export async function login(parent: any, args: LoginArgs) {
 }
 
 export async function createChat(parent: any, args: CreateChatArgs) {
-  const user = await Chat.create({ ...args });
+  const chat = await Chat.create({ ...args });
+  return chat.toJSON();
 }

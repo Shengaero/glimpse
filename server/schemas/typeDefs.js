@@ -6,6 +6,7 @@ const typeDefs = gql`
     name: String
     email: String
     password: String
+    chats: [Chat]!
   }
 
   type Chat {
@@ -36,7 +37,7 @@ const typeDefs = gql`
   type Mutation {
     createUser(name: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
-    createChat(name: String!): Chat
+    createChat(name: String!, owner: String!): Chat
   }
 `;
 
