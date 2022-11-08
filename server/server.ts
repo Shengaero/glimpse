@@ -5,11 +5,12 @@ import { ApolloServer } from 'apollo-server-express';
 
 import db from './config/connection';
 import routes from './routes';
-import resolvers from './schemas/resolvers';
-import typeDefs from './schemas/typeDefs';
+import { resolvers, typeDefs } from './schemas';
+import ChatWebSocketServer from './ws/ChatWebSocketServer';
+import { apolloMiddleware } from './utils/auth';
 
 const app = express();
-const apollo = new ApolloServer({ resolvers, typeDefs });
+const apollo = new ApolloServer({ resolvers, typeDefs, context: apolloMiddleware });
 const port = process.env.PORT || 3001;
 const production =
   !!process.env.MIMIC_HEROKU ||
