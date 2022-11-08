@@ -1,0 +1,18 @@
+# environment
+
+**/.env
+
+## do not ignore client env, we need it for create-react-app
+!client/.env
+
+# dependencies
+**/node_modules
+
+# testing
+**/coverage
+
+# production
+**/build
+
+# misc
+.DS_Store

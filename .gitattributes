@@ -1,0 +1,21 @@
+# JavaScript & TypeScript
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.json text eol=lf
+
+# Stylesheets
+*.css text eol=lf
+*.scss text eol=lf
+*.sass text eol=lf
+
+# HTML
+*.html text eol=lf
+
+# Markdown
+*.md text eol=lf
+
+# Git Files
+*.gitattributes text eol=lf
+*.gitignore text eol=lf
