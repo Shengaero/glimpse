@@ -5,7 +5,7 @@ const secret = 'mysecretsshhhhh';
 const expiration = '30d';
 
 const parseAuthHeaderToken = (token) => token.split(' ').pop().trim();
-const verifyToken = (token) => verify(token, secret, { maxAge: expiration });
+export const verifyToken = (token) => verify(token, secret, { maxAge: expiration });
 
 export const apolloMiddleware = ({ req }) => {
   let token = req.body.token || req.query.token || req.headers.authorization;

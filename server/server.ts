@@ -1,5 +1,6 @@
 import path from 'path';
 import express from 'express';
+import expressWs from 'express-ws';
 import cors from 'cors';
 import { ApolloServer } from 'apollo-server-express';
 
@@ -30,6 +31,10 @@ async function middleware() {
   // integrate apollo server
   apollo.applyMiddleware({ app });
 
+  const expressWss = expressWs(app);
+  const wss = expressWss.getWss();
+  const cwss = new ChatWebSocketServer(wss);
+
   // standard request middleware
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
@@ -47,7 +52,7 @@ async function middleware() {
   }
 
   // apply our REST routes
-  app.use(routes(production));
+  app.use(routes(production, cwss));
 }
 
 start();
