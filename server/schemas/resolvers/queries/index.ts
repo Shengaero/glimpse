@@ -1,14 +1,10 @@
 import { ApolloError, AuthenticationError } from 'apollo-server-express';
 import { Chat, User } from '../../../models';
+import { AuthContext } from '../types';
 
 type ByID = { id: String; };
-type Authenticated = {
-  user?: {
-    _id: string;
-  };
-};
 
-export async function me(_: any, _0: any, context: Authenticated) {
+export async function me(_: any, _0: any, context: AuthContext) {
   if(!context.user)
     throw new AuthenticationError('You need to be logged in!');
   const user = await User.findById(context.user._id).populate('chats');

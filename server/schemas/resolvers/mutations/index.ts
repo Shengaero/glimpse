@@ -1,6 +1,7 @@
 import { AuthenticationError } from 'apollo-server-express';
 import { Chat, User } from '../../../models';
 import { signToken } from '../../../utils/auth';
+import { AuthContext } from '../types';
 
 type Auth = {
   token: string;
@@ -8,7 +9,7 @@ type Auth = {
     _id: string;
     name: string;
     email: string;
-    chats: any[]
+    chats: any[];
   };
 };
 
@@ -25,7 +26,6 @@ type LoginArgs = {
 
 type CreateChatArgs = {
   name: String;
-  owner: String;
 };
 
 const createUserToken = ({ email, name, _id }) => signToken({
@@ -43,9 +43,12 @@ export async function createUser(_: any, args: CreateUserArgs): Promise<Auth> {
   };
 }
 
-export async function login(_: any, args: LoginArgs): Promise<Auth> {
-  const user = await User.findOne({ email: args.email }).populate('chats');
-  if(!(await user.isCorrectPassword(args.password)))
+export async function login(_: any, { email, password }: LoginArgs): Promise<Auth> {
+  const user = await User.findOne({ email }).populate('chats');
+  const authenticated = user?.isCorrectPassword(password);
+
+  // if the user was not found or the password is incorrect, the login is invalid
+  if(!authenticated || await authenticated)
     throw new AuthenticationError('Invalid login!');
 
   return {
@@ -54,7 +57,9 @@ export async function login(_: any, args: LoginArgs): Promise<Auth> {
   };
 }
 
-export async function createChat(_: any, args: CreateChatArgs) {
-  const chat = await Chat.create({ ...args });
+export async function createChat(_: any, args: CreateChatArgs, context: AuthContext) {
+  if(!context.user)
+    throw new AuthenticationError('You need to be logged in!');
+  const chat = await Chat.create({ ...args, owner: context.user._id });
   return chat.toJSON();
 }
