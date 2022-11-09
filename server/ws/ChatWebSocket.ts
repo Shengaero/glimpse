@@ -64,8 +64,8 @@ export default class ChatWebSocket {
     }
   }
 
-  send(msg: String, chatId: String) {
-    return this.sendFrame({ type: 'message', msg, chatId });
+  send(msg: String, userId: String, chatId: String) {
+    return this.sendFrame({ type: 'message', userId, msg, chatId });
   }
 
   onMessage(listener: ((data: RawData) => void) | ((data: RawData) => Promise<void>)) {
@@ -84,9 +84,6 @@ export default class ChatWebSocket {
   }
 
   private sendFrame<T extends WSPayload>(frame: T) {
-    if(!this._isAuthenticated) {
-
-    }
     return new Promise<void>((resolve, reject) => {
       this._ws.send(JSON.stringify(frame), (err) => err ? reject(err) : resolve());
     });

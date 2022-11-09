@@ -220,7 +220,7 @@ export default class ChatWebSocketServer {
           const sessionMap = this.chatMap[chatId.toString()];
           for(const sessionId in sessionMap) {
             // echo it back to all clients in same chat
-            await sessionMap[sessionId].send(msg, chatId);
+            await sessionMap[sessionId].send(msg, cws.userId, chatId);
           }
           break;
       }

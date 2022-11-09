@@ -58,7 +58,7 @@ export function useChatWebSocket() {
  * @param {React.PropsWithChildren & {
  *    wsURL: string,
  *    loadingElement?: JSX.Element,
- *    handleNewMessage?: (data: {type: string, message: string, chatId: string}) => void
+ *    handleNewMessage?: (data: {type: string, message: string, userId: string, chatId: string}) => void
  *  }} props The element props
  *
  * @see useChatWebSocket
@@ -122,6 +122,7 @@ export default function ChatWebSocketProvider(props) {
           // {
           //    "type": "message",
           //    "msg": "Hello Chat!",
+          //    "userId": "<author's user ID>"
           //    "chatId": "<chat ID>"
           // }
           handleNewMessage(payload);
