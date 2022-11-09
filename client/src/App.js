@@ -5,12 +5,13 @@ import * as client from './utils/apollo';
 import Home from './pages/Home';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Main from './pages/Main';
 
 function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <Home />
+        <Main />
       </Router>
       {/* <Login /> */}
     </ApolloProvider>
