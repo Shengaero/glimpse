@@ -28,17 +28,11 @@ type CreateChatArgs = {
   name: String;
 };
 
-const createUserToken = ({ email, name, _id }) => signToken({
-  _id: _id,
-  email: email,
-  username: name
-});
-
 export async function createUser(_: any, args: CreateUserArgs): Promise<Auth> {
   const user = await User.create(args);
 
   return {
-    token: createUserToken(user),
+    token: signToken(user.email, user.name, user._id),
     user: user.toJSON()
   };
 }
@@ -52,7 +46,7 @@ export async function login(_: any, { email, password }: LoginArgs): Promise<Aut
     throw new AuthenticationError('Invalid login!');
 
   return {
-    token: createUserToken(user),
+    token: signToken(user.email, user.name, user._id),
     user: user.toJSON()
   };
 }
