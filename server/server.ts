@@ -23,6 +23,7 @@ async function start() {
   db.once('open', () => {
     app.listen(port, () => {
       console.log(`Server open on port: ${port}`);
+      console.log(`graphql on http://localhost:${port}${apollo.graphqlPath}`);
     });
   });
 }
