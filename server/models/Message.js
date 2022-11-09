@@ -1,9 +1,11 @@
 import { Schema, model } from 'mongoose';
+import dateDisplay from '../utils/dateDisplay';
 
 export const messageSchema = new Schema({
   content: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   author: {
     type: Schema.Types.ObjectId,
@@ -13,7 +15,8 @@ export const messageSchema = new Schema({
   createdAt: {
     type: Date,
     required: true,
-    default: () => Date.now()
+    default: () => Date.now(),
+    get: dateDisplay
   }
 });
 
