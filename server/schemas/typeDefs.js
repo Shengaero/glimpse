@@ -30,8 +30,9 @@ const typeDefs = gql`
   }
 
   type Query {
-    getUser(id: ID!): User
-    getChat(id: ID!): Chat
+    me: User
+    user(id: ID!): User
+    chat(id: ID!): Chat
   }
 
   type Mutation {

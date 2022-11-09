@@ -12,7 +12,8 @@ export const messageSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    required: true
+    required: true,
+    default: () => Date.now()
   }
 });
 

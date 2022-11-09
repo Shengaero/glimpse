@@ -19,31 +19,34 @@ type CreateChatArgs = {
 };
 
 const createToken = (user: any) => {
-  return signToken(user);
+  return signToken({
+    _id: user._id,
+    email: user.email,
+    username: user.name
+  });
 };
 
-export async function createUser(parent: any, args: CreateUserArgs) {
+export async function createUser(_: any, args: CreateUserArgs) {
   const user = await User.create(args);
-  const token = createToken(user);
+
   return {
-    token: token,
+    token: createToken(user),
     user: user.toJSON()
   };
 }
 
-export async function login(parent: any, args: LoginArgs) {
+export async function login(_: any, args: LoginArgs) {
   const user = await User.findOne({ email: args.email }).populate('chats');
-  if(!(await user.isCorrectPassword(args.password))) {
+  if(!(await user.isCorrectPassword(args.password)))
     throw new AuthenticationError('Invalid login!');
-  }
-  const token = createToken(user);
+
   return {
-    token: token,
+    token: createToken(user),
     user: user.toJSON()
   };
 }
 
-export async function createChat(parent: any, args: CreateChatArgs) {
+export async function createChat(_: any, args: CreateChatArgs) {
   const chat = await Chat.create({ ...args });
   return chat.toJSON();
 }
