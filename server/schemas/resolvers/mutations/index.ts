@@ -60,6 +60,11 @@ export async function login(_: any, { email, password }: LoginArgs): Promise<Aut
 export async function createChat(_: any, args: CreateChatArgs, context: AuthContext) {
   if(!context.user)
     throw new AuthenticationError('You need to be logged in!');
-  const chat = await Chat.create({ ...args, owner: context.user._id });
+  let chat = await Chat.create({
+    name: args.name,
+    owner: context.user._id,
+    users: [context.user._id]
+  });
+  chat = await chat.populate('users');
   return chat.toJSON();
 }
