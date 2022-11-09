@@ -65,7 +65,6 @@ export default class ChatWebSocket {
   }
 
   send(msg: String, chatId: String) {
-    // TODO: handle database
     return this.sendFrame({ type: 'message', msg, chatId });
   }
 
