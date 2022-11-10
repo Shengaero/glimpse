@@ -1,13 +1,9 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+// TODO: For the MVP, we will want to shave this down by
+//only importing the bootstrap components we need.
+// https://getbootstrap.com/docs/5.2/customize/optimize/
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+// bootstrap comes first
+@import '~bootstrap/scss/bootstrap.scss';
+
+// import App styles after
+@import './App.scss';
