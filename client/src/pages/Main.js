@@ -10,7 +10,7 @@ const Main = () => {
 //   const [show, setShow] = useState(false);
 
   return (
-    <div class="container">
+    <div>
       <Nav className="bg-light" defaultActiveKey="/home" as="ul">
         <Nav.Item as="li">
           <Nav.Link href="/home">Placeholder</Nav.Link>
@@ -23,7 +23,7 @@ const Main = () => {
         </Nav.Item>
       </Nav>
       <div>
-        <Card style={{height: '40rem', width: '81rem'}}>
+        <Card className="container " style={{height: '40rem', width: '81rem'}}>
           <Card.Body>
             {/* <Card.Title>Card Title</Card.Title> */}
             <Card.Subtitle className="mb-2 text-muted">Chat Box</Card.Subtitle>
@@ -34,7 +34,9 @@ const Main = () => {
           </Card.Body>
         </Card>
       </div>
-
+      <div>
+        
+      </div>
       <div>
         <FloatingLabel
           controlId="floatingTextarea"
