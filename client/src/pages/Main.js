@@ -16,7 +16,7 @@ const Main = () => {
 
   return (
     <>
-      <Nav className="bg-light" defaultActiveKey="/home" as="ul">
+      <Nav className="bg-warning" defaultActiveKey="/home" as="ul">
         <Nav.Item as="li">
           <Nav.Link href="/home">Placeholder</Nav.Link>
         </Nav.Item>
