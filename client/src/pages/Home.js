@@ -68,12 +68,10 @@ const SignupForm = () => {
 
   const handleSignupFormSubmit = async (event) => {
     event.preventDefault();
-    console.log(signupFormState);
     try {
       const { data } = await createUser({
         variables: { ...signupFormState }
       });
-      console.log(data);
       Auth.login(data.createUser.token);
     } catch(e) {
       console.error(e);
@@ -123,7 +121,6 @@ const LoginForm = () => {
 
   const handleLoginFormSubmit = async (event) => {
     event.preventDefault();
-    console.log(loginFormState);
     try {
       const { data } = await login({
         variables: { ...loginFormState }
