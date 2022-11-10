@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
-
-import * as client from './utils/apollo';
+import client from './utils/apollo';
 import Home from './pages/Home';
 
 function App() {
@@ -10,7 +9,6 @@ function App() {
       <Router>
         <Home />
       </Router>
-      {/* <Login /> */}
     </ApolloProvider>
   );
 }
