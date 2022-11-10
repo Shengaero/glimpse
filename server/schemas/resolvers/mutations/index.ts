@@ -1,6 +1,7 @@
 import { AuthenticationError } from 'apollo-server-express';
-import { Chat, User } from '../../../models';
+import { Chat, Message, User } from '../../../models';
 import { signToken } from '../../../utils/auth';
+import { chat } from '../queries';
 import { AuthContext } from '../types';
 
 type Auth = {
@@ -61,4 +62,15 @@ export async function createChat(_: any, args: CreateChatArgs, context: AuthCont
   });
   chat = await chat.populate('users');
   return chat.toJSON();
+};
+
+export async function createMessage(_: any, args, context: AuthContext) {
+  if(!context.user)
+    throw new AuthenticationError('You need to be logged in!');
+  let newMessage = await Message.create({content: args.content, author: context.user._id});
+
+  const updateChat = await Chat.findOneAndUpdate({_id: args.chatId}, {$addToSet: {messages: newMessage._id}});
+
+  newMessage = await newMessage.populate('author');
+  return newMessage;
 }

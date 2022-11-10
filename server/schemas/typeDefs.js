@@ -27,7 +27,7 @@ type User {
   password: String
 
   "The [Chat](Chat)'s that a [User](User) belongs to, possibly empty."
-  chats: [Chat!]!
+  chats: [Chat]
 }
 
 "A chat room with users and messages."
@@ -45,7 +45,7 @@ type Chat {
   users: [User!]!
 
   "The [Message](Message)s in the [Chat](Chat), possibly empty."
-  messages: [Message!]!
+  messages: [Message]
 }
 
 "A message sent by a user in a chat room."
@@ -102,6 +102,8 @@ type Query {
     id: ID!
   ): User
 
+  messages(chatId: ID!): [Message]
+
   """
   Gets a [Chat](Chat) with the specified unique [ID](ID).
 
@@ -154,6 +156,9 @@ type Mutation {
     "The name of the [Chat](Chat)."
     name: String!
   ): Chat
+
+  createMessage(chatId: ID!, content: String!): Message
+  joinChat(chatId: ID!): User
 }
 `;
 
