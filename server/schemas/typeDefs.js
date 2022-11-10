@@ -102,8 +102,6 @@ type Query {
     id: ID!
   ): User
 
-  messages(chatId: ID!): [Message]
-
   """
   Gets a [Chat](Chat) with the specified unique [ID](ID).
 
@@ -115,6 +113,9 @@ type Query {
     "The unique [Chat ID](Chat#id)."
     id: ID!
   ): Chat
+
+  messagesByChat(chatId: ID!): Chat
+
 }
 
 "Mutations performable on the graphql server."

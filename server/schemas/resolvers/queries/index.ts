@@ -33,13 +33,19 @@ export async function chat(_: any, { id }: ByID) {
   return chat.toJSON();
 };
 
-export async function messages(_: any, { id }: ByID, context: AuthContext) {
+export async function messagesByChat(_: any, { chatId }, context: AuthContext) {
+
   if (!context.user)
     throw new ApolloError('You need to be logged in!');
-  const userInChat = await User.findOne({ _id: context.user._id, chats: { id } });
+  const userInChat = await Chat.findOne({_id: chatId, users: {$in: context.user._id}});
+
   if (!userInChat)
     throw new ApolloError('Not a member of this chat');
-  return await Message.findById({ id })
+  return await Chat.findById(chatId)
     .populate('messages')
+    .populate({
+      path: 'messages',
+      populate: 'author'
+    })
     .sort({ createdAt: -1 });
 }

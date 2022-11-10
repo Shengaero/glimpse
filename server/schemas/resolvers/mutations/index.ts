@@ -43,7 +43,7 @@ export async function login(_: any, { email, password }: LoginArgs): Promise<Aut
   const authenticated = user?.isCorrectPassword(password);
 
   // if the user was not found or the password is incorrect, the login is invalid
-  if(!authenticated || await authenticated)
+  if(!authenticated || !(await authenticated))
     throw new AuthenticationError('Invalid login!');
 
   return {
