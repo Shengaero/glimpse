@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import * as client from './utils/apollo';
+import client from './utils/apollo';
 import Home from './pages/Home';
 import ChatPage from './pages/ChatPage';
 
@@ -20,7 +20,6 @@ function App() {
           />
         </Routes>
       </Router>
-      {/* <Login /> */}
     </ApolloProvider>
   );
 }
