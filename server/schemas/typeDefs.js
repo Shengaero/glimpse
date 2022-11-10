@@ -114,6 +114,14 @@ type Query {
     id: ID!
   ): Chat
 
+  === Get all messages by chatId
+
+  
+  **Possible Errors**
+
+  - UNAUTHENTICATED: The request maker was not [authenticated](Auth).
+  - UNAUTHORIZED: user is not a member of the chat.
+  """
   messagesByChat(chatId: ID!): Chat
 
 }
@@ -158,7 +166,14 @@ type Mutation {
     name: String!
   ): Chat
 
+  === Create a new message and add it to the chatId list 
+  
+  **Possible Errors**
+
+  - UNAUTHENTICATED: The request maker was not [authenticated](Auth).
+  """
   createMessage(chatId: ID!, content: String!): Message
+
   joinChat(chatId: ID!): User
 }
 `;

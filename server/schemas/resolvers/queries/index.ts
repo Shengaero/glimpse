@@ -33,6 +33,7 @@ export async function chat(_: any, { id }: ByID) {
   return chat.toJSON();
 };
 
+//get messages by chat id only if user is a member of the chat
 export async function messagesByChat(_: any, { chatId }, context: AuthContext) {
 
   if (!context.user)

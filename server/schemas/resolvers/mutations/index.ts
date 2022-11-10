@@ -64,6 +64,7 @@ export async function createChat(_: any, args: CreateChatArgs, context: AuthCont
   return chat.toJSON();
 };
 
+//create new message and update chat
 export async function createMessage(_: any, args, context: AuthContext) {
   if(!context.user)
     throw new AuthenticationError('You need to be logged in!');
