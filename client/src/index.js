@@ -1,7 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './styles/index.scss';
+
 import App from './App';
+
+// This is out SCSS import. This should be
+//the only one in the entire project!
+import './styles/index.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
