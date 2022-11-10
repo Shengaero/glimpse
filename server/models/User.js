@@ -30,6 +30,13 @@ export const userSchema = new Schema({
     isCorrectPassword: async function (password) {
       return bcrypt.compare(password, this.password);
     }
+  },
+  toJSON: {
+    transform: (_, ret) => {
+      // we never want to return the password of the user via toJSON
+      delete ret.password;
+      return ret;
+    }
   }
 });
 
