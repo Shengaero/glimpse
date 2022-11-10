@@ -114,7 +114,7 @@ type Query {
     id: ID!
   ): Chat
 
-  === Get all messages by chatId
+  """ Get all messages by chatId
 
   
   **Possible Errors**
@@ -166,7 +166,7 @@ type Mutation {
     name: String!
   ): Chat
 
-  === Create a new message and add it to the chatId list 
+  """ Create a new message and add it to the chatId list 
   
   **Possible Errors**
 

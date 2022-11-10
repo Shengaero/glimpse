@@ -48,5 +48,5 @@ export async function messagesByChat(_: any, { chatId }, context: AuthContext) {
       path: 'messages',
       populate: 'author'
     })
-    .sort({ createdAt: -1 });
+    .sort({ 'messages.createdAt': -1 });
 }
