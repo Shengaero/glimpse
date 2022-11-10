@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import * as Auth from './utils/auth';
 
 function App() {
-  console.log(Auth.loggedIn())
+  console.log(Auth.loggedIn());
   return (
     <ApolloProvider client={client}>
       <Router>
