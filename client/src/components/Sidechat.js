@@ -2,7 +2,7 @@ import React from 'react';
 
 const SideChat = () => {
   return (
-    <div className='sidechat'>
+    <div className='sidechat '>
       <div className="userChats">
         <div className="userChatsInfo">
           <span>Joe</span>

@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
-
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import * as client from './utils/apollo';
 import Home from './pages/Home';
-import Mainpage from './pages/Mainpage';
+import ChatPage from './pages/ChatPage';
 
 function App() {
   return (
@@ -15,8 +15,8 @@ function App() {
             element={<Home />}
           />
           <Route
-            path='/mainpage'
-            element={<Mainpage />}
+            path='/chat'
+            element={<ChatPage />}
           />
         </Routes>
       </Router>

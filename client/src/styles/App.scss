@@ -1,11 +1,11 @@
-.mainpage {
+.chat-page {
   background-color: #6B728E;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   
-  .container {
+  .chat-container {
     width: 100%;
     height: 100%;
     display: flex;
@@ -55,6 +55,7 @@
   
         
       }
+
       .userChats {
         padding: 10px;
         height: 50px;
@@ -88,6 +89,7 @@
         padding: 10px;
         color: white;
         position: relative;
+        top: 640px;
   
       .user {
         margin-right: 330px;
@@ -101,6 +103,11 @@
         border-radius: 5px;
         cursor: pointer;
         padding: 10px;
+        margin-left: 180px;
+
+        &:hover {
+          background-color: #6B728E;
+        }
       }
       }
   
@@ -129,7 +136,7 @@
       }
   
       .messages {
-        height: calc(100% - 150px);
+        height: calc(100% - 100px);
         padding: 10px;
         color: white;
   
@@ -166,6 +173,15 @@
           border: none;
           width: 100%;
           outline: none;
+        }
+
+        .sendBtn {
+          background-color: #404258;
+          color: white;
+          border: none;
+          cursor: pointer;
+          border-radius: 5px;
+          width: 10%;
         }
       }
     }

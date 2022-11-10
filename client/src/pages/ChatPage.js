@@ -2,10 +2,10 @@ import React from 'react';
 import Chat from '../components/Chat';
 import Sidebar from '../components/Sidebar';
 
-export const Mainpage = () => {
+export const ChatPage = () => {
   return (
-    <div className='mainpage'>
-      <div className='container'>
+    <div className='chat-page'>
+      <div className='chat-container'>
         <Sidebar />
         <Chat />
       </div>
@@ -13,4 +13,4 @@ export const Mainpage = () => {
   );
 };
 
-export default Mainpage;
+export default ChatPage;
