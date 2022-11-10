@@ -10,6 +10,9 @@ export default function routes(production: boolean, cwss: ChatWebSocketServer) {
     router.get('/', (_, res) => {
       res.sendFile(path.join(__dirname, '../public/index.html'));
     });
+    router.get('/*', (_, res) => {
+      res.sendFile(path.join(__dirname, '../public/index.html'));
+    });
   }
 
   router.ws('/chat', (ws) => {
