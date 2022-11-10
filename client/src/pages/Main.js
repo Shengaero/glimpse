@@ -57,10 +57,13 @@ const Main = () => {
       {/* </CardGroup> */}
       <div>
         <FloatingLabel
-          controlId="floatingTextarea"
-          label="Enter text here">
-          <Form.Control style={{height: '5rem'}} as="textarea" placeholder="" />
-          <Button variant="light">Send</Button>{' '}
+          controlId="floatingInput"
+          label="Enter Text Here"
+          className="mb-3"
+        >
+          <Form.Control type="textarea" placeholder=" "
+          />
+          <Button variant="primary">Send</Button>{' '}
         </FloatingLabel>
       </div>
     </Container>
