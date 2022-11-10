@@ -13,7 +13,6 @@ function App() {
       <Router>
         <Main />
       </Router>
-      {/* <Login /> */}
     </ApolloProvider>
   );
 }

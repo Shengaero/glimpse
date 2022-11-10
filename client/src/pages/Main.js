@@ -15,7 +15,7 @@ const Main = () => {
 //   const [show, setShow] = useState(false);
 
   return (
-    <Container fluid>
+    <>
       <Nav className="bg-light" defaultActiveKey="/home" as="ul">
         <Nav.Item as="li">
           <Nav.Link href="/home">Placeholder</Nav.Link>
@@ -27,46 +27,51 @@ const Main = () => {
           <Nav.Link eventKey="link-2">Buttons</Nav.Link>
         </Nav.Item>
       </Nav>
-      <Row>
-        <Col md={2}>
-          {/* <CardGroup> */}
-          <Card className="container md-2" style={{height: '50rem', width: '20rem'}}>
-            <Card.Body>
-              {/* <Card.Title>Card Title</Card.Title> */}
-              <Card.Subtitle className="mb-2 text-muted">Side Bar</Card.Subtitle>
-              <Card.Text>
+      <Container fluid>
+        <Row>
+          <Col md={2}>
+            {/* <CardGroup> */}
+            <Card className="container md-2" style={{height: '50rem', width: 'max'}}>
+              <Card.Body>
+                {/* <Card.Title>Card Title</Card.Title> */}
+                <Card.Subtitle className="mb-2 text-muted">Side Bar</Card.Subtitle>
+                <Card.Text>
                 placeholder text
                 wooh more messages
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={10}>
-          <Card style={{height: '50rem', width: 'max'}}>
-            <Card.Body>
-              {/* <Card.Title>Card Title</Card.Title> */}
-              <Card.Subtitle className="mb-2 text-muted">Chat Box</Card.Subtitle>
-              <Card.Text>
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={10}>
+            <Card style={{height: '50rem', width: 'max'}}>
+              <Card.Body>
+                {/* <Card.Title>Card Title</Card.Title> */}
+                <Card.Subtitle className="mb-2 text-muted">Chat Box</Card.Subtitle>
+                <Card.Text>
                           placeholder text
                           wooh more messages
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      {/* </CardGroup> */}
-      <div>
-        <FloatingLabel
-          controlId="floatingInput"
-          label="Enter Text Here"
-          className="mb-3"
-        >
-          <Form.Control type="textarea" placeholder=" "
-          />
-          <Button variant="primary">Send</Button>{' '}
-        </FloatingLabel>
-      </div>
-    </Container>
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+        {/* </CardGroup> */}
+        <div>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Enter Text Here"
+            className="mb-3"
+          >
+            <Form.Control
+              type="textarea"
+              placeholder=" "
+              onChange={e => {}}
+            />
+            <Button variant="primary">Send</Button>{' '}
+          </FloatingLabel>
+        </div>
+      </Container>
+    </>
   );
 
 };
