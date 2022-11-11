@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ChatList from './ChatList';
-import { Navbar, Col, Button, Nav, Dropdown } from 'react-bootstrap';
+import { Navbar, Button, Nav, Dropdown, Offcanvas } from 'react-bootstrap';
 import * as Auth from '../utils/auth';
 
 const ChatSideAreaNavbar = () => (
   <Navbar expand={false} className="px-2 py-0">
-    <span className="fw-bold">GLIMPSE</span>
+    {/* <span className="fw-bold">GLIMPSE</span> */}
     <Dropdown>
       <Dropdown.Toggle >
         <i className="bi bi-gear-fill"></i>
@@ -42,12 +42,29 @@ const ChatSideAreaNavBottom = () => (
 );
 
 export default function ChatSideArea(props) {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   return (
-    <Col xs={3} className="d-flex flex-column chat-side-area">
-      <ChatSideAreaNavbar />
-      <ChatSideAreaSearch />
-      <ChatList {...props} />
-      <ChatSideAreaNavBottom />
-    </Col>
+    <>
+      <Button className='off-canvas-btn' variant="primary" onClick={handleShow}>
+        Chat
+      </Button>
+
+      <Offcanvas className='off-canvas' show={show} onHide={handleClose}>
+        <Offcanvas.Header className='off-canvas-header' closeButton>
+          <Offcanvas.Title className='off-canvas-title'>GLIMPSE</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body className='chat-side-area'>
+          {/* <Col xs={3} className="d-flex flex-column chat-side-area"> */}
+          <ChatSideAreaNavbar />
+          <ChatSideAreaSearch />
+          <ChatList {...props} />
+          <ChatSideAreaNavBottom />
+          {/* </Col> */}
+        </Offcanvas.Body>
+      </Offcanvas>
+    </>
   );
 };

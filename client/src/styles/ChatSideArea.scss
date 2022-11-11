@@ -1,42 +1,63 @@
-.chat-side-area {
-  background-color: #474E68;
+.off-canvas-btn {
+  background-color: #404258;
+  border-width: 0;
+  border-radius: 0;
+  outline: none;
 
-  .navbar {
-    background-color: #404258;
-    min-height: $y-border-element-height;
-    color: white;
-
-    .bi {
-      cursor: pointer;
-    }
+  &:hover {
+    background-color: #474E68;
   }
+  &:active {
+    background-color: #474E68 !important;
+  }
+}
 
-  .search {
-    border-bottom: 1px solid gray;
+.off-canvas{
+  background-color: #404258;
 
-    .search-form {
-      padding: 10px;
-
-      input {
-        background-color: transparent;
-        border: none;
-        color: white;
-        outline: none;
-        width: 100%;
-
-        &::placeholder {
-          color: lightgray;
+  .off-canvas-title {
+    color: white;
+  }
+  .chat-side-area {
+    background-color: #474E68;
+  
+    .navbar {
+      background-color: #404258;
+      min-height: $y-border-element-height;
+      color: white;
+  
+      .bi {
+        cursor: pointer;
+      }
+    }
+  
+    .search {
+      border-bottom: 1px solid gray;
+  
+      .search-form {
+        padding: 10px;
+  
+        input {
+          background-color: transparent;
+          border: none;
+          color: white;
+          outline: none;
+          width: 100%;
+  
+          &::placeholder {
+            color: lightgray;
+          }
         }
       }
     }
-  }
-
-  .nav-bottom {
-    background-color: #404258;
-    min-height: $y-border-element-height;
-    color: white;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  
+    .nav-bottom {
+      background-color: #404258;
+      min-height: $y-border-element-height;
+      color: white;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
   }
 }
