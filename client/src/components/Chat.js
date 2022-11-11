@@ -83,7 +83,8 @@ const ChatTextArea = ({ chatId }) => {
 
 export default function Chat({ chatId, messages, setMessages }) {
   const { data } = useQuery(GET_CHAT, {
-    variables: { chatId: chatId }
+    variables: { chatId: chatId },
+    fetchPolicy: 'network-only'
   });
 
   useEffect(() => {

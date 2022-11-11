@@ -5,8 +5,11 @@ import ChatSideArea from '../components/ChatSideArea';
 import ChatWebSocketProvider from '../components/ChatWebSocket';
 import { GET_ME } from '../utils/queries';
 
+const WS_URL = `ws://${process.env.NODE_ENV === 'production' ? window.location.host : 'localhost:3001'}/chat`;
+
 export default function ChatPage() {
-  const { data } = useQuery(GET_ME);
+  const { data } = useQuery(GET_ME, {
+  });
   const [chat, setChat] = useState(null);
   const [messages, setMessages] = useState([]);
 
@@ -50,21 +53,26 @@ export default function ChatPage() {
     <div className='d-flex chat-page'>
       <div className='d-flex h-100 w-100'>
         <ChatWebSocketProvider
-          wsURL="ws://localhost:3001/chat" // FIXME: fix this hardcoding
+          wsURL={WS_URL}
           handleNewMessage={handleNewMessage}
         >
-          <ChatSideArea />
-          {
-            chat ? (
-              <Chat
-                chatId={chat._id}
-                messages={messages}
-                setMessages={setMessages}
-              />
-            ) : (
-              <div>Loading...</div> // FIXME: add a default element for when there is no chat viewable
-            )
-          }
+          <ChatSideArea
+            chats={data.me.chats}
+            currentChat={chat}
+            setChat={(chat) => {
+              setChat(chat);
+              setMessages([]);
+            }}
+          />
+          {chat ? (
+            <Chat
+              chatId={chat._id}
+              messages={messages}
+              setMessages={setMessages}
+            />
+          ) : (
+            <div>Loading...</div> // FIXME: add a default element for when there is no chat viewable
+          )}
         </ChatWebSocketProvider>
       </div>
     </div>
