@@ -43,7 +43,7 @@ type DeleteMessageArgs = DeleteChatArgs & {
 
 type JoinChatArgs = {
   chatId: String;
-}
+};
 
 export async function createUser(_: any, args: CreateUserArgs): Promise<Auth> {
   const user = await User.create(args);
@@ -59,7 +59,7 @@ export async function login(_: any, { email, password }: LoginArgs): Promise<Aut
   const authenticated = user?.isCorrectPassword(password);
 
   // if the user was not found or the password is incorrect, the login is invalid
-  if (!authenticated || !(await authenticated))
+  if(!authenticated || !(await authenticated))
     throw new AuthenticationError('Invalid login!');
 
   return {
@@ -69,7 +69,7 @@ export async function login(_: any, { email, password }: LoginArgs): Promise<Aut
 }
 
 export async function createChat(_: any, args: CreateChatArgs, context: AuthContext) {
-  if (!context.user)
+  if(!context.user)
     throw new AuthenticationError('You need to be logged in!');
   let chat = await Chat.create({
     name: args.name,
@@ -93,14 +93,14 @@ export async function createChat(_: any, args: CreateChatArgs, context: AuthCont
 
 //create new message and update chat
 export async function createMessage(_: any, args: CreateMessageArgs, context: AuthContext) {
-  if (!context.user)
+  if(!context.user)
     throw new AuthenticationError('You need to be logged in!');
 
   // we need to grab this so that we can verify the chat even exists to begin with.
   const chat = await Chat.findById(args.chatId)
     .withUserId(context.user._id);
 
-  if (!chat)
+  if(!chat)
     throw new ApolloError(`Chat with ID '${args.chatId}' not found!`, 'NOT_FOUND');
 
   // create new message.
@@ -112,7 +112,7 @@ export async function createMessage(_: any, args: CreateMessageArgs, context: Au
   try {
     // update this chat adding the message
     await chat.addMessage(newMessage._id);
-  } catch (err) {
+  } catch(err) {
     await newMessage.delete();
     throw err;
   }
@@ -121,7 +121,7 @@ export async function createMessage(_: any, args: CreateMessageArgs, context: Au
 }
 
 export async function deleteChat(_: any, args: DeleteChatArgs, context: AuthContext) {
-  if (!context.user)
+  if(!context.user)
     throw new AuthenticationError('You need to be logged in!');
 
   // first delete the chat
@@ -131,7 +131,7 @@ export async function deleteChat(_: any, args: DeleteChatArgs, context: AuthCont
   });
 
   // if no chat was deleted, throw error
-  if (!chat) {
+  if(!chat) {
     throw new ApolloError(
       `Chat with ID '${args.chatId}' owned by User with ID '${context.user._id}' not found!`,
       'NOT_FOUND'
@@ -145,7 +145,7 @@ export async function deleteChat(_: any, args: DeleteChatArgs, context: AuthCont
 }
 
 export async function deleteMessage(_: any, { chatId, messageId }: DeleteMessageArgs, context: AuthContext) {
-  if (!context.user)
+  if(!context.user)
     throw new AuthenticationError('You need to be logged in!');
 
   // find a chat by ID
@@ -153,17 +153,17 @@ export async function deleteMessage(_: any, { chatId, messageId }: DeleteMessage
     .withUserId(context.user._id)
     .populate('messages');
 
-  if (!chat)
+  if(!chat)
     throw new ApolloError(`Chat with ID '${chatId}' not found!`, 'NOT_FOUND');
 
   const message = await Message.findById(messageId);
 
-  if (!message)
+  if(!message)
     throw new ApolloError(`Message with ID '${messageId}' not found!`, 'NOT_FOUND');
 
   const updateResults = await chat.update({ $pull: { messages: message._id } });
 
-  if (updateResults.n) {
+  if(updateResults.n) {
     throw new ApolloError(
       `Message with ID '${messageId}' not found in Chat with ID '${chatId}'!`,
       'NOT_FOUND'
@@ -175,7 +175,7 @@ export async function deleteMessage(_: any, { chatId, messageId }: DeleteMessage
   try {
     // delete the message
     await message.delete();
-  } catch (err) {
+  } catch(err) {
     await chat.update({ $push: { messages: message._id } });
     throw err;
   }
@@ -183,16 +183,32 @@ export async function deleteMessage(_: any, { chatId, messageId }: DeleteMessage
   return message.toJSON();
 }
 
-export async function joinChat(_, { chatId }: JoinChatArgs, context: AuthContext) {
-  if (!context.user)
+export async function joinChat(_: any, { chatId }: JoinChatArgs, context: AuthContext) {
+  if(!context.user)
     throw new AuthenticationError('You need to be logged in!');
 
-  const updated = await User.findOneAndUpdate({ _id: context.user._id }, { $addToSet: { chats: chatId } }, { new: true })
-    .populate('chats')
-    .populate({ path: 'chats', populate: { path: 'messages', populate: 'author' } });
+  const updateResults = await User.updateOne(
+    { _id: context.user._id },
+    { $addToSet: { chats: chatId } }
+  );
 
-  if (updated) {
-    await Chat.findOneAndUpdate({ _id: chatId }, { $addToSet: { users: context.user._id } });
-  }
-  return updated;
+  if(updateResults.modifiedCount < 1)
+    throw new ApolloError(`Chat with ID '${chatId}' not found!`, 'NOT_FOUND');
+
+  // find and update the chat, we need this data back
+  //so we can render it on the client's end
+  return await Chat.findOneAndUpdate(
+    { _id: chatId },
+    { $addToSet: { users: context.user._id } },
+    { new: true }
+  ).populate('users').populate({
+    path: 'messages',
+    options: {
+      limit: 100, // limit 100 messages per request TODO: paginate this (?)
+      sort: { createdAt: -1 }
+    },
+    populate: {
+      path: 'author'
+    }
+  });
 }

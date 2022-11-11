@@ -202,7 +202,7 @@ type Mutation {
   **Possible Errors**
 
   - UNAUTHENTICATED: The request maker was not [authenticated](Auth).
-  - NOT_FOUND: The [Message](Message) to delete and/or [Channel](Channel)
+  - NOT_FOUND: The [Message](Message) to delete and/or [Chat](Chat)
     to delete it from were not found.
   """
   deleteMessage(
@@ -212,7 +212,16 @@ type Mutation {
     messageId: ID
   ): Message
 
- joinChat(chatId: ID!): User
+  """
+  Joins the currently [authenticated](Auth) [User](User) to a [Chat](Chat)
+  matching the provided chatId.
+
+  **Possible Errors**
+
+  - UNAUTHENTICATED: The request maker was not [authenticated](Auth).
+  - NOT_FOUND: The [Chat](Chat) to delete was not found.
+  """
+  joinChat(chatId: ID!): Chat
 }
 `;
 
