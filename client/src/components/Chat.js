@@ -7,7 +7,7 @@ const Chat = () => {
     <div className='chat'>
       <div className="chatInfo">
         <span>Joe</span>
-        <i class="bi bi-three-dots-vertical moreIcon"></i>
+        <i className="bi bi-three-dots-vertical moreIcon"></i>
       </div>
       <Message />
       <Text />
