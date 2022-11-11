@@ -16,6 +16,7 @@ export default function routes(production: boolean, cwss: ChatWebSocketServer) {
   }
 
   router.ws('/chat', (ws) => {
+    console.log('test')
     // don't await this
     cwss.addWebSocket(ws, uuidv4());
   });
