@@ -1,22 +1,14 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
 import Chat from '../components/Chat';
-import Sidebar from '../components/Sidebar';
-import * as Auth from '../utils/auth';
+import ChatSideArea from '../components/ChatSideArea';
 
-export const ChatPage = () => {
-  if(!Auth.loggedIn()) {
-    return <Navigate to="/" />;
-  }
-
+export default function ChatPage() {
   return (
-    <div className='chat-page'>
-      <div className='chat-container'>
-        <Sidebar />
+    <div className='d-flex chat-page'>
+      <div className='d-flex h-100 w-100'>
+        <ChatSideArea />
         <Chat />
       </div>
     </div>
   );
 };
-
-export default ChatPage;

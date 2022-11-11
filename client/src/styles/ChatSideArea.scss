@@ -1,0 +1,42 @@
+.chat-side-area {
+  background-color: #474E68;
+
+  .navbar {
+    background-color: #404258;
+    min-height: $y-border-element-height;
+    color: white;
+
+    .bi {
+      cursor: pointer;
+    }
+  }
+
+  .search {
+    border-bottom: 1px solid gray;
+
+    .search-form {
+      padding: 10px;
+
+      input {
+        background-color: transparent;
+        border: none;
+        color: white;
+        outline: none;
+        width: 100%;
+
+        &::placeholder {
+          color: lightgray;
+        }
+      }
+    }
+  }
+
+  .nav-bottom {
+    background-color: #404258;
+    min-height: $y-border-element-height;
+    color: white;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
