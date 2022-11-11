@@ -1,0 +1,23 @@
+.chat-list {
+  overflow-y: auto;
+
+  .chat-list-item {
+    min-height: 50px;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #404258;
+    }
+
+    .item-name {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .item-message {
+      font-size: 13px;
+      color: lightgray;
+    }
+  }
+}

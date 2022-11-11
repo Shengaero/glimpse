@@ -1,0 +1,59 @@
+.chat {
+  .navbar {
+    background-color: #474E68;
+    min-height: $y-border-element-height;
+    color: white;
+
+    .bi {
+      cursor: pointer;
+    }
+
+    span {
+      font-size: 20px;
+      font-weight: 500;
+    }
+  }
+
+  .message-area {
+    color: white;
+    overflow-y: auto;
+
+    .message {
+      .message-stub {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        align-items: center;
+
+        .message-user {
+          font-size: 20px;
+          font-weight: 500;
+        }
+      }
+
+      .message-time {
+        font-size: 10px;
+      }
+    }
+  }
+
+  .text-area {
+    min-height: $y-border-element-height;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    input {
+      border: none;
+      width: 100%;
+      outline: none;
+    }
+
+    .send-btn {
+      background-color: #404258;
+      color: white;
+      border: none;
+    }
+  }
+}
