@@ -64,8 +64,12 @@ export default class ChatWebSocket {
     }
   }
 
-  send(msg: String, userId: String, chatId: String) {
-    return this.sendFrame({ type: 'message', userId, msg, chatId });
+  send(msg: String, userId: String, chatId: String, createdAt: Date) {
+    return this.sendFrame({
+      type: 'message',
+      createdAt: createdAt.getTime(),
+      msg, userId, chatId
+    });
   }
 
   onMessage(listener: ((data: RawData) => void) | ((data: RawData) => Promise<void>)) {

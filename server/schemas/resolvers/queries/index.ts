@@ -18,11 +18,41 @@ export async function user(_: any, { id }: ByID) {
   return user.toJSON();
 };
 
-export async function chat(_: any, { id }: ByID) {
+export async function chat(_: any, { id }: ByID, context: AuthContext) {
+  if(!context.user)
+    throw new AuthenticationError('You need to be logged in!');
+
   const chat = await Chat.findById(id)
-    .populate('messages')
-    .populate('users');
+    .withUserId(context.user._id)
+    .populate('users')
+    .populate({
+      path: 'messages',
+      options: {
+        limit: 100, // limit 100 messages per request TODO: paginate this (?)
+        sort: { createdAt: -1 }
+      }
+    });
+
   if(!chat)
-    throw new ApolloError(`Chat with ID '${id}' not found!`, 'NOT FOUND');
+    throw new ApolloError(`Chat with ID '${id}' not found!`, 'NOT_FOUND');
+
   return chat.toJSON();
 };
+
+//get messages by chat id only if user is a member of the chat
+// async function messagesByChat(_: any, { chatId }, context: AuthContext) {
+
+//   if(!context.user)
+//     throw new ApolloError('You need to be logged in!');
+//   const userInChat = await Chat.findOne({ _id: chatId, users: { $in: context.user._id } });
+
+//   if(!userInChat)
+//     throw new ApolloError('Not a member of this chat');
+//   return await Chat.findById(chatId)
+//     .populate('messages')
+//     .populate({
+//       path: 'messages',
+//       populate: 'author'
+//     })
+//     .sort({ 'messages.createdAt': -1 });
+// }

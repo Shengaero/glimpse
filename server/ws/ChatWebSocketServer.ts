@@ -3,6 +3,7 @@ import { WebSocket, Server as WebSocketServer, RawData } from 'ws';
 import { Chat, Message, User } from '../models';
 import { verifyToken } from '../utils/auth';
 import { WSPayload, MessagePayload, AuthPayload } from './payloads';
+import { createMessage } from '../schemas/resolvers/mutations';
 import ChatWebSocket from './ChatWebSocket';
 import * as CODES from './codes';
 
@@ -198,29 +199,23 @@ export default class ChatWebSocketServer {
       switch(command.type) {
         case 'ping':
           // pong!
-          await cws.pong();
+          cws.pong();
           break;
         case 'message':
           // deconstruct msg and chatId
           const { msg, chatId } = command as MessagePayload;
 
-          // create a message object
-          const message = await Message.create({
-            content: msg,
-            author: cws.userId
-          });
-
-          // update chat and add the message
-          await Chat.updateOne(
-            { _id: chatId },
-            { $push: { messages: message._id } }
-          );
+          // pass off to createMessage mutation
+          const { content, createdAt } = await createMessage(null, { chatId, content: msg }, { user: { _id: cws.userId }});
 
           // get all sessions subscribed to the chatId
           const sessionMap = this.chatMap[chatId.toString()];
           for(const sessionId in sessionMap) {
-            // echo it back to all clients in same chat
-            await sessionMap[sessionId].send(msg, cws.userId, chatId);
+            // Echo it back to all clients in same chat.
+            // Note that we pass the content, not the msg. The reason for
+            //this is because we want to send the value provided to us
+            //AFTER inserting it into the database, as this is validated.
+            sessionMap[sessionId].send(content, cws.userId, chatId, createdAt);
           }
           break;
       }
