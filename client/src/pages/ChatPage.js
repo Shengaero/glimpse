@@ -7,7 +7,7 @@ import { GET_ME } from '../utils/queries';
 import * as Auth from '../utils/auth';
 import { Navigate } from 'react-router-dom';
 
-const WS_URL = `ws://${process.env.NODE_ENV === 'production' ? window.location.host : 'localhost:3001'}/chat`;
+const WS_URL = `${process.env.NODE_ENV === 'production' ? `wss://${window.location.host}` : 'ws://localhost:3001'}/chat`;
 
 export default function ChatPage() {
   const { data } = useQuery(GET_ME, {
