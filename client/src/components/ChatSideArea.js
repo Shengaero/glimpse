@@ -1,23 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ChatList from './ChatList';
 import { Navbar, Col, Button, Nav, Dropdown } from 'react-bootstrap';
 import * as Auth from '../utils/auth';
+import CreateChatModal from './CreateChatModal';
 
-const ChatSideAreaNavbar = () => (
-  <Navbar expand={false} className="px-2 py-0">
-    <span className="fw-bold">GLIMPSE</span>
-    <Dropdown>
-      <Dropdown.Toggle >
-        <i className="bi bi-gear-fill"></i>
-      </Dropdown.Toggle>
-      <Dropdown.Menu align="end">
-        <Dropdown.Item href="#/action-1">This will be something else</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Later in the future</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Just a placeholder for now</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown >
-  </Navbar>
-);
+function ChatSideAreaNavbar() {
+  const [showCreateChat, setShowCreateChat] = useState(false);
+  return (
+    <Navbar expand={false} className="px-2 py-0">
+      <span className="fw-bold">GLIMPSE</span>
+      <Dropdown>
+        <Dropdown.Toggle>
+          <i className="bi bi-gear-fill"></i>
+        </Dropdown.Toggle>
+        <Dropdown.Menu align="end">
+          <Dropdown.Item onClick={() => setShowCreateChat(true)}>
+            Create Chat
+          </Dropdown.Item>
+          <Dropdown.Item href="#/action-2">Later in the future</Dropdown.Item>
+          <Dropdown.Item href="#/action-3">Just a placeholder for now</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+      <CreateChatModal show={showCreateChat} setShow={setShowCreateChat} />
+    </Navbar>
+  );
+}
 
 const ChatSideAreaSearch = () => (
   <div className="search">
