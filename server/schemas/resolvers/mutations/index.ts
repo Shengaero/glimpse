@@ -177,7 +177,12 @@ export async function joinChat(_, { chatId }: JoinChatArgs, context: AuthContext
   if (!context.user)
     throw new AuthenticationError('You need to be logged in!');
 
-  return await User.findOneAndUpdate({ _id: context.user._id }, { $addToSet: { chats: chatId } }, { new: true })
+  const updated = await User.findOneAndUpdate({ _id: context.user._id }, { $addToSet: { chats: chatId } }, { new: true })
     .populate('chats')
     .populate({ path: 'chats', populate: { path: 'messages', populate: 'author' } });
+
+  if (updated) {
+    await Chat.findOneAndUpdate({ _id: chatId }, { $addToSet: { users: context.user._id } });
+  }
+  return updated;
 }
