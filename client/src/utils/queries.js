@@ -8,13 +8,12 @@ export const GET_ME = gql`
       chats {
         _id
         name
+        users {
+          _id
+          name
+        }
         messages {
           _id
-          content
-          author {
-            _id
-          }
-          createdAt
         }
       }
     }
@@ -47,6 +46,7 @@ export const GET_CHAT = gql`
         content
         author {
           _id
+          name
         }
         createdAt
       }
