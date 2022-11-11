@@ -41,6 +41,10 @@ type DeleteMessageArgs = DeleteChatArgs & {
   messageId: String;
 };
 
+type JoinChatArgs = {
+  chatId: String;
+};
+
 export async function createUser(_: any, args: CreateUserArgs): Promise<Auth> {
   const user = await User.create(args);
 
@@ -177,4 +181,34 @@ export async function deleteMessage(_: any, { chatId, messageId }: DeleteMessage
   }
 
   return message.toJSON();
+}
+
+export async function joinChat(_: any, { chatId }: JoinChatArgs, context: AuthContext) {
+  if(!context.user)
+    throw new AuthenticationError('You need to be logged in!');
+
+  const updateResults = await User.updateOne(
+    { _id: context.user._id },
+    { $addToSet: { chats: chatId } }
+  );
+
+  if(updateResults.modifiedCount < 1)
+    throw new ApolloError(`Chat with ID '${chatId}' not found!`, 'NOT_FOUND');
+
+  // find and update the chat, we need this data back
+  //so we can render it on the client's end
+  return await Chat.findOneAndUpdate(
+    { _id: chatId },
+    { $addToSet: { users: context.user._id } },
+    { new: true }
+  ).populate('users').populate({
+    path: 'messages',
+    options: {
+      limit: 100, // limit 100 messages per request TODO: paginate this (?)
+      sort: { createdAt: -1 }
+    },
+    populate: {
+      path: 'author'
+    }
+  });
 }
