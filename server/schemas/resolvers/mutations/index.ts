@@ -72,7 +72,17 @@ export async function createChat(_: any, args: CreateChatArgs, context: AuthCont
     owner: context.user._id,
     users: [context.user._id]
   });
-  console.log('test');
+
+  // We need to try catch here in case we encounter an error so we can "rollback"
+  try {
+    // add the chat to the user
+    await User.updateOne(
+      { _id: context.user._id },
+      { $push: { chats: chat._id } }
+    );
+  } catch(err) {
+    console.log(err);
+  }
   chat = await chat.populate('users');
   return chat.toJSON();
 };
