@@ -1,11 +1,20 @@
 import React from 'react';
 import ChatList from './ChatList';
-import { Navbar, Col, Button, Nav } from 'react-bootstrap';
+import {Navbar, Col, Button, Nav, Dropdown} from 'react-bootstrap';
 
 const ChatSideAreaNavbar = () => (
   <Navbar expand={false} className="px-2 py-0">
     <span className="fw-bold">GLIMPSE</span>
-    <i className="bi bi-gear-fill"></i>
+    <Dropdown>
+      <Dropdown.Toggle>
+        <i className="bi bi-gear-fill"> </i>
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        <Dropdown.Item href="#/action-1">This will do something in the future</Dropdown.Item>
+        <Dropdown.Item href="#/action-2">Later in the future</Dropdown.Item>
+        <Dropdown.Item href="#/action-3">Just a placeholder for now</Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
   </Navbar>
 );
 
@@ -23,11 +32,12 @@ const ChatSideAreaNavBottom = () => (
       <img src='' alt='' />
       <span className="user">User</span>
     </div>
-    <Button className="py-0">
+    <Button className="py-0" >
       Logout
     </Button>
   </Nav>
 );
+
 
 export default function ChatSideArea() {
   return (
