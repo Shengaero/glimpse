@@ -212,7 +212,7 @@ type Mutation {
     messageId: ID
   ): Message
 
-  # TODO: joinChat(chatId: ID!): User
+ joinChat(chatId: ID!): User
 }
 `;
 
