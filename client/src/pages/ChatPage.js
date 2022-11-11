@@ -4,6 +4,8 @@ import Chat from '../components/Chat';
 import ChatSideArea from '../components/ChatSideArea';
 import ChatWebSocketProvider from '../components/ChatWebSocket';
 import { GET_ME } from '../utils/queries';
+import * as Auth from '../utils/auth';
+import { Navigate } from 'react-router-dom';
 
 const WS_URL = `ws://${process.env.NODE_ENV === 'production' ? window.location.host : 'localhost:3001'}/chat`;
 
@@ -43,6 +45,10 @@ export default function ChatPage() {
       }
     }
   }, [data, chat, setChat]);
+
+  if(!Auth.loggedIn()) {
+    return <Navigate to="/" />;
+  }
 
   // if the data hasn't come in yet
   if(!data) {
