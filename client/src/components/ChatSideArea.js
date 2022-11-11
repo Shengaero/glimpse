@@ -1,6 +1,7 @@
 import React from 'react';
 import ChatList from './ChatList';
-import { Navbar, Col, Button, Nav, Dropdown} from 'react-bootstrap';
+import { Navbar, Col, Button, Nav, Dropdown } from 'react-bootstrap';
+import * as Auth from '../utils/auth';
 
 const ChatSideAreaNavbar = () => (
   <Navbar expand={false} className="px-2 py-0">
@@ -32,7 +33,9 @@ const ChatSideAreaNavBottom = () => (
       <img src='' alt='' />
       <span className="user">User</span>
     </div>
-    <Button className="py-0">
+    <Button className="py-0" onClick={() => {
+      Auth.logout();
+    }}>
       Logout
     </Button>
   </Nav>

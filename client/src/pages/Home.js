@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -161,6 +161,11 @@ const Home = () => {
   const [showModal, setShowModal] = useState(false);
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+
+
+  if(Auth.loggedIn()) {
+    return <Navigate to="/chat" />;
+  }
 
   return (
     <div className='jumbotron position-absolute top-50 start-50 translate-middle d-flex flex-column'>
