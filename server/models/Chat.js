@@ -23,6 +23,20 @@ export const chatSchema = new Schema({
       ref: 'Message'
     }
   ]
+}, {
+  methods: {
+    addMessage: function (messageId) {
+      return this.update({ $push: { messages: messageId } });
+    },
+    deleteMessage: function (messageId) {
+      return this.update({ $pull: { messages: messageId } });
+    }
+  },
+  query: {
+    withUserId(userId) {
+      return this.where({ users: userId });
+    }
+  }
 });
 
 export const Chat = model('Chat', chatSchema);

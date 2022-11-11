@@ -7,4 +7,5 @@ export type AuthPayload = WSPayload<'auth'> & {
 export type MessagePayload = WSPayload<'message'> & {
   msg: String;
   chatId: String;
+  createdAt?: Date;
 };

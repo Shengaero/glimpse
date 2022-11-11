@@ -10,11 +10,13 @@ export const userSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    match: [/.+@.+\..+/, 'Invalid email']
   },
   password: {
     type: String,
     required: true,
+    minlength: 8,
     unique: true
   },
   chats: [
@@ -27,6 +29,13 @@ export const userSchema = new Schema({
   methods: {
     isCorrectPassword: async function (password) {
       return bcrypt.compare(password, this.password);
+    }
+  },
+  toJSON: {
+    transform: (_, ret) => {
+      // we never want to return the password of the user via toJSON
+      delete ret.password;
+      return ret;
     }
   }
 });
