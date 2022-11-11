@@ -104,7 +104,7 @@ export default function Chat({ chatId, messages, setMessages }) {
           <Dropdown.Toggle >
             <i className="bi bi-three-dots-vertical"></i>
           </Dropdown.Toggle>
-          <Dropdown.Menu>
+          <Dropdown.Menu align="end">
             <Dropdown.Item href="#/action-1">Test</Dropdown.Item>
             <Dropdown.Item href="#/action-2">Test</Dropdown.Item>
             <Dropdown.Item href="#/action-3">Test</Dropdown.Item>

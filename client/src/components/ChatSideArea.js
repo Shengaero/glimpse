@@ -10,7 +10,7 @@ const ChatSideAreaNavbar = () => (
       <Dropdown.Toggle >
         <i className="bi bi-gear-fill"></i>
       </Dropdown.Toggle>
-      <Dropdown.Menu>
+      <Dropdown.Menu align="end">
         <Dropdown.Item href="#/action-1">This will be something else</Dropdown.Item>
         <Dropdown.Item href="#/action-2">Later in the future</Dropdown.Item>
         <Dropdown.Item href="#/action-3">Just a placeholder for now</Dropdown.Item>
