@@ -123,7 +123,8 @@ export default function ChatWebSocketProvider(props) {
           //    "type": "message",
           //    "msg": "Hello Chat!",
           //    "userId": "<author's user ID>"
-          //    "chatId": "<chat ID>"
+          //    "chatId": "<chat ID>",
+          //    "createdAt": "<time created at>"
           // }
           handleNewMessage(payload);
           break;

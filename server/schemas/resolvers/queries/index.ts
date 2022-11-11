@@ -7,7 +7,13 @@ type ByID = { id: String; };
 export async function me(_: any, _0: any, context: AuthContext) {
   if(!context.user)
     throw new AuthenticationError('You need to be logged in!');
-  const user = await User.findById(context.user._id).populate('chats');
+  const user = await User.findById(context.user._id)
+    .populate({
+      path: 'chats',
+      populate: {
+        path: 'users'
+      }
+    });
   return user.toJSON();
 }
 
@@ -30,6 +36,9 @@ export async function chat(_: any, { id }: ByID, context: AuthContext) {
       options: {
         limit: 100, // limit 100 messages per request TODO: paginate this (?)
         sort: { createdAt: -1 }
+      },
+      populate: {
+        path: 'author'
       }
     });
 
