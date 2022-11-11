@@ -75,7 +75,9 @@ export default class ChatWebSocketServer {
     // get the session map for the chat
     const sessionMap = this.chatMap[chatId];
     // delete this reference to the websocket session
-    delete sessionMap[sessionId];
+    try {
+      delete sessionMap[sessionId];
+    } catch(err) { /** This is fine */ }
   }
 
   subscribeWebSocketToChat(cws: ChatWebSocket, chatId: string) {
@@ -206,7 +208,7 @@ export default class ChatWebSocketServer {
           const { msg, chatId } = command as MessagePayload;
 
           // pass off to createMessage mutation
-          const { content, createdAt } = await createMessage(null, { chatId, content: msg }, { user: { _id: cws.userId }});
+          const { content, createdAt } = await createMessage(null, { chatId, content: msg }, { user: { _id: cws.userId } });
 
           // get all sessions subscribed to the chatId
           const sessionMap = this.chatMap[chatId.toString()];

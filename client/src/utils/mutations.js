@@ -25,13 +25,16 @@ export const LOGIN_USER = gql`
 `;
 
 export const CREATE_CHAT = gql`
-  mutation createChat($name: String!, $owner: String!) {
-    createChat(name: $name, owner: $owner) {
+  mutation createChat($name: String!) {
+    createChat(name: $name) {
         _id
         name
-        messages
-        owner
-        users    
+        owner {
+          _id
+        }
+        users {
+          _id
+        }
     }
   }
 `;
