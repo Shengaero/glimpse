@@ -1,16 +1,14 @@
 import React from 'react';
 import Chat from '../components/Chat';
-import Sidebar from '../components/Sidebar';
+import ChatSideArea from '../components/ChatSideArea';
 
-export const ChatPage = () => {
+export default function ChatPage() {
   return (
-    <div className='chat-page'>
-      <div className='chat-container'>
-        <Sidebar />
+    <div className='d-flex chat-page'>
+      <div className='d-flex h-100 w-100'>
+        <ChatSideArea />
         <Chat />
       </div>
     </div>
   );
 };
-
-export default ChatPage;
