@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {Col, Navbar, Button, Dropdown, SplitButton} from 'react-bootstrap';
+import {Col, Navbar, Button, Dropdown} from 'react-bootstrap';
 
 const ChatMessage = () => (
   <div className="message">
