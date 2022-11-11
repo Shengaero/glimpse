@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
+
 "A user of the application."
 type User {
   "The unique [ID](ID) of the [User](User)."
@@ -42,7 +43,7 @@ type Chat {
   owner: User!
 
   "The [User](User)s that are part of the [Chat](Chat), never empty."
-  users: [User!]!
+  users: [User]
 
   "The [Message](Message)s in the [Chat](Chat), possibly empty."
   messages: [Message]
@@ -107,23 +108,13 @@ type Query {
 
   **Possible Errors**
 
+  - UNAUTHENTICATED: The request maker was not [authenticated](Auth).
   - NOT_FOUND: A [Chat](Chat) was not found.
   """
   chat(
     "The unique [Chat ID](Chat#id)."
     id: ID!
   ): Chat
-
-  """ Get all messages by chatId
-
-  
-  **Possible Errors**
-
-  - UNAUTHENTICATED: The request maker was not [authenticated](Auth).
-  - UNAUTHORIZED: user is not a member of the chat.
-  """
-  messagesByChat(chatId: ID!): Chat
-
 }
 
 "Mutations performable on the graphql server."
@@ -166,15 +157,62 @@ type Mutation {
     name: String!
   ): Chat
 
-  """ Create a new message and add it to the chatId list 
-  
+  """
+  Create a new [Message](Message) and add it to the [Chat](Chat)
+  matching the provided chatId.
+
+  This is only available when the request maker is [authenticated](Auth).
+
   **Possible Errors**
 
   - UNAUTHENTICATED: The request maker was not [authenticated](Auth).
+  - NOT_FOUND: The chat to post the message to was not found.
   """
-  createMessage(chatId: ID!, content: String!): Message
+  createMessage(
+    "The ID of the [Chat](Chat) to create a [Message](Message) in."
+    chatId: ID!,
+    "The content of the [Message] to send."
+    content: String!
+  ): Message
 
-  joinChat(chatId: ID!): User
+  """
+  Deletes an existing [Chat](Chat) matching the provided chatId.
+
+  This is only available when the request maker is [authenticated](Auth), and
+  the chatId matches a [Chat](Chat) where the authenticated [User](Auth#user)
+  is also the [owner of the Chat](Chat#owner).
+
+  Also note this will delete [related messages](Chat#messages).
+
+  **Possible Errors**
+
+  - UNAUTHENTICATED: The request maker was not [authenticated](Auth).
+  - NOT_FOUND: The [Chat](Chat) to delete was not found, and/or the
+    authenticated [User](User) was not the owner of the [Chat](Chat).
+  """
+  deleteChat(
+    "The ID of the [Chat](Chat) to delete."
+    chatId: ID!
+  ): Chat
+
+  """
+  Deletes an existing [Message](Message) with a matching [message ID](Message#_id)
+  from a given [Chat](Chat) with a matching [chat ID](Chat#_id).
+
+  **Possible Errors**
+
+  - UNAUTHENTICATED: The request maker was not [authenticated](Auth).
+  - NOT_FOUND: The [Message](Message) to delete and/or [Channel](Channel)
+    to delete it from were not found.
+  """
+  deleteMessage(
+    "The ID of the [Chat](Chat) to delete the [Message](Message) from."
+    chatId: ID!,
+    "The ID of the [Message](Message) to delete."
+    messageId: ID
+  ): Message
+
+  # TODO: joinChat(chatId: ID!): User
 }
 `;
 
