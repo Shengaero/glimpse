@@ -26,10 +26,10 @@ export const chatSchema = new Schema({
 }, {
   methods: {
     addMessage: function (messageId) {
-      return this.update({ $push: { messages: messageId } });
+      return this.updateOne({ $push: { messages: messageId } });
     },
     deleteMessage: function (messageId) {
-      return this.update({ $pull: { messages: messageId } });
+      return this.updateOne({ $pull: { messages: messageId } });
     }
   },
   query: {

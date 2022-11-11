@@ -161,7 +161,7 @@ export async function deleteMessage(_: any, { chatId, messageId }: DeleteMessage
   if(!message)
     throw new ApolloError(`Message with ID '${messageId}' not found!`, 'NOT_FOUND');
 
-  const updateResults = await chat.update({ $pull: { messages: message._id } });
+  const updateResults = await chat.updateOne({ $pull: { messages: message._id } });
 
   if(updateResults.n) {
     throw new ApolloError(
@@ -176,7 +176,7 @@ export async function deleteMessage(_: any, { chatId, messageId }: DeleteMessage
     // delete the message
     await message.delete();
   } catch(err) {
-    await chat.update({ $push: { messages: message._id } });
+    await chat.updateOne({ $push: { messages: message._id } });
     throw err;
   }
 

@@ -1,8 +1,9 @@
 import path from 'path';
 import express from 'express';
-import expressWs from 'express-ws';
 import cors from 'cors';
 import { ApolloServer } from 'apollo-server-express';
+import { Server as WSServer } from 'ws';
+import { v4 as uuidv4 } from 'uuid';
 
 import db from './config/connection';
 import routes from './routes';
@@ -21,9 +22,17 @@ async function start() {
   await apollo.start();
   await middleware();
   db.once('open', () => {
-    app.listen(port, () => {
+    const server = app.listen(port, () => {
       console.log(`Server open on port: ${port}`);
       console.log(`graphql on http://localhost:${port}${apollo.graphqlPath}`);
+    });
+
+    const wss = new WSServer({ server: server, path: '/chat' });
+    console.log(`WSS open at ${wss.address()}`);
+    const cwss = new ChatWebSocketServer(wss);
+
+    wss.on('connection', (socket, request) => {
+      cwss.addWebSocket(socket, uuidv4());
     });
   });
 }
@@ -31,10 +40,6 @@ async function start() {
 async function middleware() {
   // integrate apollo server
   apollo.applyMiddleware({ app });
-
-  const expressWss = expressWs(app);
-  const wss = expressWss.getWss();
-  const cwss = new ChatWebSocketServer(wss);
 
   // standard request middleware
   app.use(express.urlencoded({ extended: true }));
@@ -53,7 +58,7 @@ async function middleware() {
   }
 
   // apply our REST routes
-  app.use(routes(production, cwss));
+  app.use(routes(production));
 }
 
 start();
