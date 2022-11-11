@@ -38,13 +38,12 @@ const ChatSideAreaNavBottom = () => (
   </Nav>
 );
 
-
-export default function ChatSideArea() {
+export default function ChatSideArea(props) {
   return (
     <Col xs={3} className="d-flex flex-column chat-side-area">
       <ChatSideAreaNavbar />
       <ChatSideAreaSearch />
-      <ChatList />
+      <ChatList {...props} />
       <ChatSideAreaNavBottom />
     </Col>
   );
