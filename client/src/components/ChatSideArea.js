@@ -1,12 +1,21 @@
 import React from 'react';
 import ChatList from './ChatList';
-import { Navbar, Col, Button, Nav } from 'react-bootstrap';
+import { Navbar, Col, Button, Nav, Dropdown } from 'react-bootstrap';
 import * as Auth from '../utils/auth';
 
 const ChatSideAreaNavbar = () => (
   <Navbar expand={false} className="px-2 py-0">
     <span className="fw-bold">GLIMPSE</span>
-    <i className="bi bi-gear-fill"></i>
+    <Dropdown>
+      <Dropdown.Toggle >
+        <i className="bi bi-gear-fill"></i>
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        <Dropdown.Item href="#/action-1">This will be something else</Dropdown.Item>
+        <Dropdown.Item href="#/action-2">Later in the future</Dropdown.Item>
+        <Dropdown.Item href="#/action-3">Just a placeholder for now</Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown >
   </Navbar>
 );
 

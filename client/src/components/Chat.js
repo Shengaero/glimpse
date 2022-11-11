@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { Col, Navbar, Button } from 'react-bootstrap';
+import { Col, Navbar, Button, Dropdown} from 'react-bootstrap';
 
 import { useChatWebSocket } from './ChatWebSocket';
 import { GET_CHAT } from '../utils/queries';
@@ -100,7 +100,16 @@ export default function Chat({ chatId, messages, setMessages }) {
         <span>
           {data?.chat?.name || 'Loading...'} {/* FIXME: Make this look better while loading */}
         </span>
-        <i className="bi bi-three-dots-vertical"></i>
+        <Dropdown>
+          <Dropdown.Toggle >
+            <i className="bi bi-three-dots-vertical"></i>
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item href="#/action-1">Test</Dropdown.Item>
+            <Dropdown.Item href="#/action-2">Test</Dropdown.Item>
+            <Dropdown.Item href="#/action-3">Test</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </Navbar>
       {data ? (
         <>
