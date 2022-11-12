@@ -247,7 +247,7 @@ export async function leaveChat(_: any, { chatId }: JoinChatArgs, context: AuthC
       { $pull: { chats: chat._id } }
     );
   } catch(err) {
-    await chat.updateOne({ $push: { users: context.user._id } });
+    await chat.updateOne({ $addToSet: { users: context.user._id } });
     throw err;
   }
 
