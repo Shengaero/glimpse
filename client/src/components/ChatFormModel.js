@@ -29,6 +29,11 @@ export function CreateChatModal({ show, setShow }) {
       });
 
       setChatName('');
+
+      // Reload the chat
+      // Unfortunately until I can find a better solution to updating
+      //the websocket to listen to the new chat, this will have to do.
+      window.location.reload();
     } catch(err) {
       console.log(err);
     }
@@ -43,7 +48,7 @@ export function CreateChatModal({ show, setShow }) {
       onConfirm={handleCreateChat}
       accept="Create"
     >
-      <Form>
+      <Form onSubmit={(event) => event.preventDefault()}>
         <Form.Group>
           <Form.Label>Chat Name</Form.Label>
           <Form.Control
@@ -82,7 +87,13 @@ export function JoinChatModal({ show, setShow }) {
       await joinChat({
         variables: { chatId: chatId.trim() }
       });
+
       setChatId('');
+
+      // Reload the chat
+      // Unfortunately until I can find a better solution to updating
+      //the websocket to listen to the new chat, this will have to do.
+      window.location.reload();
     } catch(err) {
       console.log(err);
     }
@@ -97,7 +108,7 @@ export function JoinChatModal({ show, setShow }) {
       onConfirm={handleJoinChat}
       accept="Join"
     >
-      <Form>
+      <Form onSubmit={(event) => event.preventDefault()}>
         <Form.Group>
           <Form.Label>Chat ID</Form.Label>
           <Form.Control
