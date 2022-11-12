@@ -3,7 +3,6 @@ import express from 'express';
 import cors from 'cors';
 import { ApolloServer } from 'apollo-server-express';
 import { Server as WSServer } from 'ws';
-import { v4 as uuidv4 } from 'uuid';
 
 import db from './config/connection';
 import routes from './routes';
@@ -28,12 +27,8 @@ async function start() {
     });
 
     const wss = new WSServer({ server: server, path: '/chat' });
+    ChatWebSocketServer.create(wss);
     console.log(`WSS open at ${wss.address()}`);
-    const cwss = new ChatWebSocketServer(wss);
-
-    wss.on('connection', (socket, request) => {
-      cwss.addWebSocket(socket, uuidv4());
-    });
   });
 }
 

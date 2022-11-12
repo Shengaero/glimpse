@@ -1,6 +1,7 @@
 import { WebSocket, Server as WebSocketServer, RawData } from 'ws';
+import { v4 as uuidv4 } from 'uuid';
 
-import { Chat, Message, User } from '../models';
+import { User } from '../models';
 import { verifyToken } from '../utils/auth';
 import { WSPayload, MessagePayload, AuthPayload } from './payloads';
 import { createMessage } from '../schemas/resolvers/mutations';
@@ -8,10 +9,17 @@ import ChatWebSocket from './ChatWebSocket';
 import * as CODES from './codes';
 
 type AuthError = 'not auth' | 'no token' | 'timed out';
-type ChatWebSocketMap = {
-  [chatId: string]: {
-    [sessionId: string]: ChatWebSocket;
-  };
+
+type ChatSessions = {
+  [chatId: string]: string[];
+};
+
+type UserSessions = {
+  [userId: string]: string[];
+};
+
+type SessionSockets = {
+  [sessionId: string]: ChatWebSocket;
 };
 
 function parsePayload(data: RawData) {
@@ -27,12 +35,29 @@ function parsePayload(data: RawData) {
 }
 
 export default class ChatWebSocketServer {
-  readonly wss: WebSocketServer;
-  readonly chatMap: ChatWebSocketMap;
+  private static INSTANCE: ChatWebSocketServer;
+  static get() {
+    if(!this.INSTANCE)
+      throw new Error('ChatWebSocketServer not created!');
+    return this.INSTANCE;
+  }
 
-  constructor(wss: WebSocketServer) {
-    this.chatMap = {};
+  static create(wss: WebSocketServer) {
+    if(this.INSTANCE)
+      throw new Error('ChatWebSocketServer already created!');
+    this.INSTANCE = new ChatWebSocketServer(wss);
+  }
+
+  private readonly wss: WebSocketServer;
+  private readonly chatSessions: ChatSessions = {};
+  private readonly userSessions: UserSessions = {};
+  private readonly sessionSockets: SessionSockets = {};
+
+  private constructor(wss: WebSocketServer) {
     this.wss = wss;
+    this.wss.on('connection', (ws) => {
+      this.addWebSocket(ws, uuidv4());
+    });
   }
 
   close() {
@@ -48,48 +73,132 @@ export default class ChatWebSocketServer {
       return;
 
     console.log(`Client connected (User ID: '${userId}', Session ID: '${sessionId}')`);
-
     // create a ChatWebSocket wrapper
     const cws = new ChatWebSocket(ws, userId, sessionId);
-
+    // add session socket
+    this.sessionSockets[cws.sessionId] = cws;
+    // subscribe session to user
+    this.subscribeSessionToUser(cws.sessionId, cws.userId);
     // query the database to find the user in question
     const user = await User.findById(userId);
-
     // subscribe the websocket to all chats it's a part of
     user.chats.forEach(chatId => {
-      this.subscribeWebSocketToChat(cws, chatId.toString());
+      this.subscribeSessionToChat(cws.sessionId, chatId.toString());
     });
 
     cws.onMessage(data => this.handleOnMessage(data, cws));
+
     cws.onClose(async code => {
-      console.log(`Client closed connection with code: ${code}!`);
-      const user = await User.findById(userId);
-      user.chats.forEach(chatId => {
-        this.unsubscribeSessionFromChat(cws.sessionId, chatId.toString());
-      });
-      cws.close();
+      try {
+        console.log(`Client closed connection with code: ${code}!`);
+        // delete session socket
+        delete this.sessionSockets[cws.sessionId];
+        // unsubscribe session from user
+        this.unsubscribeSessionFromUser(cws.sessionId, cws.userId);
+        // find user by ID
+        const user = await User.findById(userId);
+        // unsubscribe them from all their chats
+        user.chats.forEach(chatId => {
+          this.unsubscribeSessionFromChat(cws.sessionId, chatId.toString());
+        });
+        // invoke close to clean up heartbeat interval
+        cws.close();
+      } catch(err) {
+        console.log('Error while closing web socket:', err);
+      }
     });
   }
 
-  unsubscribeSessionFromChat(sessionId: string, chatId: string) {
-    // get the session map for the chat
-    const sessionMap = this.chatMap[chatId];
-    // delete this reference to the websocket session
-    try {
-      delete sessionMap[sessionId];
-    } catch(err) { /** This is fine */ }
+  subscribeSessionToChat(sessionId: string, chatId: string) {
+    // add sessionId to chatSessions
+    let sessions = this.chatSessions[chatId];
+    // if no sessions exist
+    if(!sessions) {
+      // create new array
+      sessions = [];
+      // add it to chatSessions
+      this.chatSessions[chatId] = sessions;
+    }
+    // push new sessionId
+    sessions.push(sessionId);
   }
 
-  subscribeWebSocketToChat(cws: ChatWebSocket, chatId: string) {
-    // get the sessions this chatId has subscribing to it
-    let chatSessions = this.chatMap[chatId];
-    // if none was found, go ahead and add it to the chat map
-    if(!chatSessions) {
-      chatSessions = {};
-      this.chatMap[chatId] = chatSessions;
+  subscribeSessionToUser(sessionId: string, userId: string) {
+    // add sessionId to userSessions
+    let sessions = this.userSessions[userId];
+    // if no sessions exist
+    if(!sessions) {
+      // create new array
+      sessions = [];
+      // add it to userSessions
+      this.userSessions[userId] = sessions;
     }
+    // push new sessionId
+    sessions.push(sessionId);
+  }
 
-    chatSessions[cws.sessionId] = cws;
+  unsubscribeSessionFromChat(sessionId: string, chatId: string) {
+    // remove sessionId from chatSessions
+    const sessions = this.chatSessions[chatId];
+    // if no sessions
+    if(!sessions) {
+      // return, we can't unsub from something that never existed to begin with
+      return;
+    }
+    // slice out sessionId
+    sessions.slice(sessions.findIndex((id) => id === sessionId), 1);
+    // if no sessions remain
+    if(sessions.length < 1) {
+      // delete this chatId from chatSessions
+      delete this.chatSessions[chatId];
+    }
+  }
+
+  unsubscribeSessionFromUser(sessionId: string, userId: string) {
+    // remove sessionId to userSessions
+    const sessions = this.userSessions[userId];
+    // if no sessions
+    if(!sessions) {
+      // return, we can't unsub from something that never existed to begin with
+      return;
+    }
+    // slice out sessionId
+    sessions.slice(sessions.findIndex((id) => id === sessionId), 1);
+    // if no sessions remain
+    if(sessions.length < 1) {
+      // delete this userId from userSessions
+      delete this.userSessions[userId];
+    }
+  }
+
+  subscribeUserToChat(userId: string, chatId: string) {
+    // get sessions by userId
+    const sessions = this.userSessions[userId];
+    // if no sessions
+    if(!sessions) {
+      // return, we don't do anything here
+      return;
+    }
+    // for each session
+    sessions.forEach((sessionId) => {
+      // subscribe to the chat
+      this.subscribeSessionToChat(sessionId, chatId);
+    });
+  }
+
+  unsubscribeUserFromChat(userId: string, chatId: string) {
+    // get sessions by userId
+    const sessions = this.userSessions[userId];
+    // if no sessions
+    if(!sessions) {
+      // return, we don't do anything here
+      return;
+    }
+    // for each session
+    sessions.forEach((sessionId) => {
+      // don't think about big-oh...
+      this.unsubscribeSessionFromChat(sessionId, chatId);
+    });
   }
 
   // In order to actually securely grab the authentication of a connecting user,
@@ -211,13 +320,13 @@ export default class ChatWebSocketServer {
           const { content, createdAt } = await createMessage(null, { chatId, content: msg }, { user: { _id: cws.userId } });
 
           // get all sessions subscribed to the chatId
-          const sessionMap = this.chatMap[chatId.toString()];
-          for(const sessionId in sessionMap) {
+          const sessionIds = this.chatSessions[chatId.toString()];
+          for(const sessionId of sessionIds) {
             // Echo it back to all clients in same chat.
             // Note that we pass the content, not the msg. The reason for
             //this is because we want to send the value provided to us
             //AFTER inserting it into the database, as this is validated.
-            sessionMap[sessionId].send(content, cws.userId, chatId, createdAt);
+            this.sessionSockets[sessionId].send(content, cws.userId, chatId, createdAt);
           }
           break;
       }
