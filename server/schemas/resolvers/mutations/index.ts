@@ -187,17 +187,9 @@ export async function joinChat(_: any, { chatId }: JoinChatArgs, context: AuthCo
   if(!context.user)
     throw new AuthenticationError('You need to be logged in!');
 
-  const updateResults = await User.updateOne(
-    { _id: context.user._id },
-    { $addToSet: { chats: chatId } }
-  );
-
-  if(updateResults.modifiedCount < 1)
-    throw new ApolloError(`Chat with ID '${chatId}' not found!`, 'NOT_FOUND');
-
   // find and update the chat, we need this data back
   //so we can render it on the client's end
-  return await Chat.findOneAndUpdate(
+  const chat = await Chat.findOneAndUpdate(
     { _id: chatId },
     { $addToSet: { users: context.user._id } },
     { new: true }
@@ -211,4 +203,19 @@ export async function joinChat(_: any, { chatId }: JoinChatArgs, context: AuthCo
       path: 'author'
     }
   });
+
+  if(!chat)
+    throw new ApolloError(`Chat with ID '${chatId}' not found!`, 'NOT_FOUND');
+
+  // try catch incase we need to "rollback"
+  try {
+    await User.updateOne(
+      { _id: context.user._id },
+      { $addToSet: { chats: chat._id } }
+    );
+  } catch(err) {
+    await chat.updateOne({ $pull: { users: context.user._id } });
+  }
+
+  return chat;
 }
