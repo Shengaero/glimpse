@@ -1,14 +1,52 @@
+.off-canvas {
+  background-color: #404258;
+  --bs-offcanvas-width: 433px;
+
+  .off-canvas-header {
+    display: flex;
+    justify-content: end;
+    .close-btn {
+      color: white;
+      cursor: pointer;
+    }
+  }
+
+  .list-group-canvas {
+    background-color: #50577A;
+
+    .list-group-item{
+
+      background-color: #50577A;
+      color: white;
+      
+      &:hover {
+        background-color: #6B728E;
+      }
+      .create-chat{
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+
 .chat-side-area {
   background-color: #474E68;
-
+  
   .navbar {
     background-color: #404258;
     min-height: $y-border-element-height;
     color: white;
+    
+    .off-canvas-btn {
+      background-color: #404258;
+      border: none;
+    }
 
     .bi {
       cursor: pointer;
     }
+
   }
 
   .search {
@@ -38,5 +76,14 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+
+    Button{
+      background-color: #50577A;
+      border: none;
+
+      &:hover{
+        background-color: #6B728E;
+      }
+    }
   }
 }
