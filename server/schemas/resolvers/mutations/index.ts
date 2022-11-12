@@ -113,7 +113,7 @@ export async function createMessage(_: any, args: CreateMessageArgs, context: Au
     // update this chat adding the message
     await chat.addMessage(newMessage._id);
   } catch(err) {
-    await newMessage.delete();
+    await newMessage.deleteOne();
     throw err;
   }
 
@@ -180,7 +180,7 @@ export async function deleteMessage(_: any, { chatId, messageId }: DeleteMessage
   //update fails, we need to "rollback" and readd the message.
   try {
     // delete the message
-    await message.delete();
+    await message.deleteOne();
   } catch(err) {
     await chat.updateOne({ $push: { messages: message._id } });
     throw err;
