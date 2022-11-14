@@ -5,6 +5,7 @@ import { Col, Navbar, Button, Dropdown } from 'react-bootstrap';
 import { useChatWebSocket } from './ChatWebSocket';
 import { ChatModal } from './ChatFormModel';
 import { GET_CHAT } from '../utils/queries';
+import dateDisplay from '../utils/dateDisplay';
 
 // FIXME: This needs to look wayyyyyy better
 const ChatMessage = ({ author, content, createdAt }) => {
@@ -12,9 +13,9 @@ const ChatMessage = ({ author, content, createdAt }) => {
   return (
     <div className="message">
       <div className="message-stub">
-        <span className="message-user">{author.name}</span>
+        <span className="message-user me-2">{author.name}</span>
         <div className="message-time">
-          <span>{createAtDate.toLocaleDateString() + ' ' + createAtDate.toLocaleTimeString()}</span>
+          <span>{dateDisplay(createAtDate)}</span>
         </div>
       </div>
       <div className="message-text">
