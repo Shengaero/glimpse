@@ -18,7 +18,7 @@ export default function NavbarMd() {
             <Button className='off-canvas-btn' onClick={handleShow}>
                 <i className="bi bi-gear-fill"></i>
             </Button>
-            <Offcanvas className='off-canvas' show={show} onHide={handleClose} placement='end'>
+            <Offcanvas className='off-canvas-main' show={show} onHide={handleClose} placement='end'>
                 <Offcanvas.Header className='off-canvas-header'>
                     <i className="bi bi-x-lg close-btn" onClick={handleClose}></i>
                 </Offcanvas.Header>

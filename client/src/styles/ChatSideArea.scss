@@ -6,8 +6,14 @@
     min-height: $y-border-element-height;
     color: white;
 
-    .bi {
+    .gear-icon {
       cursor: pointer;
+      background-color: #404258;
+      border: none;
+
+      &:hover {
+        background-color: #474E68;
+      }
     }
   }
 
@@ -38,10 +44,19 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+
+    .logout-btn{
+      background-color: #474E68;
+      border: none;
+
+      &:hover {
+        background-color: #6B728E;
+      }
+    }
   }
 }
 
-@include media-breakpoint-down(md){
+@include media-breakpoint-down(lg){
   .chat-side-area{
     display: none !important;
   }

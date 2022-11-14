@@ -1,3 +1,33 @@
+.off-canvas-main {
+    background-color: #404258 !important;
+    --bs-offcanvas-width: 433px;
+  
+    .off-canvas-header {
+      display: flex;
+      justify-content: end;
+      .close-btn {
+        color: white;
+        cursor: pointer;
+      }
+    }
+  
+    .list-group-canvas {
+      background-color: #50577A;
+  
+      .list-group-item{
+  
+        background-color: #50577A;
+        color: white;
+        
+        &:hover {
+          background-color: #6B728E;
+        }
+        .create-chat{
+          cursor: pointer;
+        }
+      }
+    }
+  }
 .md-navbar {
     background-color: #404258;
     padding: 10px;
@@ -15,7 +45,7 @@
     }
 }
 
-@include media-breakpoint-up(md){
+@include media-breakpoint-up(lg){
     .md-navbar{
         display: none;
     }

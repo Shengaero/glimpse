@@ -11,8 +11,8 @@ function ChatSideAreaNavbar() {
     <Navbar expand={false} className="px-2 py-0">
       <span className="fw-bold">GLIMPSE</span>
       <Dropdown>
-        <Dropdown.Toggle>
-          <i className="bi bi-gear-fill"></i>
+        <Dropdown.Toggle className='gear-icon'>
+          <i className="bi bi-gear-fill gear-icon"></i>
         </Dropdown.Toggle>
         <Dropdown.Menu align="end">
           <Dropdown.Item onClick={() => setShowCreateChat(true)}>
@@ -43,7 +43,7 @@ const ChatSideAreaNavBottom = () => (
       <img src='' alt='' />
       <span className="user">User</span>
     </div>
-    <Button className="py-0" onClick={() => {
+    <Button className="py-1 logout-btn" onClick={() => {
       Auth.logout();
     }}>
       Logout
