@@ -11,7 +11,7 @@ A chat for when you just don't have the time to look around
 
 ## Description
 
-
+glimpse is a chat application developed for the purpose of wanted a simple chat app that doesn't overwhelm the user with too many unnecessary features.
 
 ## Usage
 
