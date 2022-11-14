@@ -1,0 +1,56 @@
+.off-canvas-main {
+  background-color: #474E68 !important;
+  --bs-offcanvas-width: 433px;
+
+  .off-canvas-header {
+    display: flex;
+    justify-content: end;
+
+    .close-btn {
+      color: white;
+      cursor: pointer;
+    }
+  }
+
+  .list-group-canvas {
+    background-color: #474E68;
+
+    .list-group-item {
+
+      background-color: #50577A;
+      color: white;
+
+      &:hover {
+        background-color: #6B728E;
+      }
+
+      .create-chat {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.md-navbar {
+  background-color: #404258;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+
+  .navbar-brand {
+    color: white;
+    font-weight: 500;
+  }
+
+  .off-canvas-btn {
+    background-color: transparent;
+    border: none;
+
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .md-navbar {
+    display: none;
+  }
+}
