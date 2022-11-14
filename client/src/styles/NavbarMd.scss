@@ -1,5 +1,5 @@
 .off-canvas-main {
-    background-color: #404258 !important;
+    background-color: #474E68 !important;
     --bs-offcanvas-width: 433px;
   
     .off-canvas-header {
@@ -12,16 +12,17 @@
     }
   
     .list-group-canvas {
-      background-color: #50577A;
+      background-color: #474E68;
   
       .list-group-item{
   
         background-color: #50577A;
         color: white;
-        
+
         &:hover {
           background-color: #6B728E;
         }
+
         .create-chat{
           cursor: pointer;
         }

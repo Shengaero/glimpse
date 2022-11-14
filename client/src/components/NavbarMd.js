@@ -26,7 +26,7 @@ export default function NavbarMd(props) {
                     <Offcanvas.Body>
                         <ListGroup className='list-group-canvas'>
                             <ListGroup.Item className='create-chat' onClick={() => setShowCreateChat(true)}>Create Chat</ListGroup.Item>
-                            <ListGroup.Item className='chat-list-offcanvas'>
+                            <ListGroup.Item>
                                 <ChatList {...props} />
                             </ListGroup.Item>
                             <ListGroup.Item onClick={() => { Auth.logout() }}>Logout</ListGroup.Item>
