@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import ChatList from './ChatList';
 import { Navbar, Col, Button, Nav, Dropdown } from 'react-bootstrap';
 import * as Auth from '../utils/auth';
-import { CreateChatModal, JoinChatModal } from './ChatFormModel';
+import { CreateChatModal, JoinChatModal, DeleteChatModal } from './ChatFormModel';
 
 function ChatSideAreaNavbar() {
   const [showCreateChat, setShowCreateChat] = useState(false);
   const [showJoinChat, setShowJoinChat] = useState(false);
+  const [showDeleteChat, setShowDeleteChat] = useState(false);
   return (
     <Navbar expand={false} className="px-2 py-0">
       <span className="fw-bold">GLIMPSE</span>
@@ -21,10 +22,14 @@ function ChatSideAreaNavbar() {
           <Dropdown.Item onClick={() => setShowJoinChat(true)}>
             Join Chat
           </Dropdown.Item>
+          <Dropdown.Item onClick={() => setShowDeleteChat(true)}>
+            Delete Chat
+          </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
       <CreateChatModal show={showCreateChat} setShow={setShowCreateChat} />
       <JoinChatModal show={showJoinChat} setShow={setShowJoinChat} />
+      <DeleteChatModal show={showDeleteChat} setShow={setShowDeleteChat}></DeleteChatModal>
     </Navbar>
   );
 }

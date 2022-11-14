@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 import { LEAVE_CHAT } from '../utils/mutations';
 
 function ChatListItem({ isCurrent, chat, setChat }) {
-  const [leaveChat, {error}] = useMutation(LEAVE_CHAT);
+  const [leaveChat] = useMutation(LEAVE_CHAT);
 
 
   const handleOnClick = (event) => {
@@ -13,9 +13,9 @@ function ChatListItem({ isCurrent, chat, setChat }) {
       setChat(chat);
     }
   };
-  const handleLeaveChat = (chatId) => {
+  const handleLeaveChat = async (chatId) => {
     try {
-      const { data } = leaveChat({
+      await leaveChat({
         variables: { chatId }
       });
 
@@ -26,13 +26,13 @@ function ChatListItem({ isCurrent, chat, setChat }) {
   };
 
   return (
-    <li className="chat-list-item align-items-center p-2" onClick={handleOnClick}>
-      <span className="item-name">{chat.name}</span>
+    <li className="chat-list-item align-items-center justify-items-between p-2" onClick={handleOnClick}>
+      <span className="item-name mr-auto">{chat.name}</span>
       <button
         className="btn btn-sm btn-danger ml-auto"
         onClick={() => handleLeaveChat(chat._id)}
       >
-        X
+        Leave Chat
       </button>
     </li>
   );
