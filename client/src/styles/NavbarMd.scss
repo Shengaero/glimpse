@@ -1,8 +1,22 @@
 .md-navbar {
     background-color: #404258;
     padding: 10px;
+    display: flex;
+    justify-content: center;
 
     .navbar-brand{
         color: white;
+        font-weight: 500;
+    }
+    .off-canvas-btn{
+        background-color: transparent;
+        border: none;
+        
+    }
+}
+
+@include media-breakpoint-up(md){
+    .md-navbar{
+        display: none;
     }
 }
