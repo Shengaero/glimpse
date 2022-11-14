@@ -5,21 +5,25 @@ import { Col, Navbar, Button, Dropdown } from 'react-bootstrap';
 import { useChatWebSocket } from './ChatWebSocket';
 import { ChatModal } from './ChatFormModel';
 import { GET_CHAT } from '../utils/queries';
+import dateDisplay from '../utils/dateDisplay';
 
 // FIXME: This needs to look wayyyyyy better
-const ChatMessage = ({ author, content, createdAt }) => (
-  <div className="message">
-    <div className="message-stub">
-      <span className="message-user">{author.name}</span>
-      <div className="message-time">
-        <span>{createdAt}</span>
+const ChatMessage = ({ author, content, createdAt }) => {
+  const createAtDate = new Date(parseInt(createdAt));
+  return (
+    <div className="message">
+      <div className="message-stub">
+        <span className="message-user me-2">{author.name}</span>
+        <div className="message-time">
+          <span>{dateDisplay(createAtDate)}</span>
+        </div>
+      </div>
+      <div className="message-text">
+        <p>{content}</p>
       </div>
     </div>
-    <div className="message-text">
-      <p>{content}</p>
-    </div>
-  </div>
-);
+  );
+};
 
 const ChatMessageArea = ({ messages }) => {
   // create a ref to help us with scrolling to bottom of chat
