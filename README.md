@@ -49,7 +49,6 @@ If there are any questions about our application, please feel free to email any 
 * jiangbrendon@gmail.com
 * anguyen780@gmail.com
 * bobbeekethdy@gmail.com
-* @gmail.com
 * KaidanGustave@yahoo.com
 
 ## Credits
