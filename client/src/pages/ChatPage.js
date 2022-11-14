@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client';
 import Chat from '../components/Chat';
 import ChatSideArea from '../components/ChatSideArea';
 import ChatWebSocketProvider from '../components/ChatWebSocket';
+import NavbarMd from '../components/NavbarMd';
 import { GET_ME } from '../utils/queries';
 import * as Auth from '../utils/auth';
 import { Navigate } from 'react-router-dom';
@@ -62,6 +63,14 @@ export default function ChatPage() {
           wsURL={WS_URL}
           handleNewMessage={handleNewMessage}
         >
+          <NavbarMd
+            chats={data.me.chats}
+            currentChat={chat}
+            setChat={(chat) => {
+              setChat(chat);
+              setMessages([]);
+            }}
+          />
           <ChatSideArea
             chats={data.me.chats}
             currentChat={chat}
