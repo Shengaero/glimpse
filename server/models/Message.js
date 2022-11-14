@@ -15,13 +15,8 @@ export const messageSchema = new Schema({
   createdAt: {
     type: Date,
     required: true,
-    default: Date.now(),
-    get: (timestamp) => dateDisplay(timestamp)
-  }
-},
-{
-  toJSON: {
-    getters: true
+    default: Date.now()
+    // get: (timestamp) => dateDisplay(timestamp)
   }
 }
 );

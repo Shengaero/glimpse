@@ -1,24 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { Col, Navbar, Button, Dropdown} from 'react-bootstrap';
+import { Col, Navbar, Button, Dropdown } from 'react-bootstrap';
 
 import { useChatWebSocket } from './ChatWebSocket';
 import { GET_CHAT } from '../utils/queries';
 
 // FIXME: This needs to look wayyyyyy better
-const ChatMessage = ({ author, content, createdAt }) => (
-  <div className="message">
-    <div className="message-stub">
-      <span className="message-user">{author.name}</span>
-      <div className="message-time">
-        <span>{createdAt}</span>
+const ChatMessage = ({ author, content, createdAt }) => {
+  const createAtDate = new Date(parseInt(createdAt));
+  return (
+    <div className="message">
+      <div className="message-stub">
+        <span className="message-user">{author.name}</span>
+        <div className="message-time">
+          <span>{createAtDate.toLocaleDateString() + ' ' + createAtDate.toLocaleTimeString()}</span>
+        </div>
+      </div>
+      <div className="message-text">
+        <p>{content}</p>
       </div>
     </div>
-    <div className="message-text">
-      <p>{content}</p>
-    </div>
-  </div>
-);
+  );
+};
 
 const ChatMessageArea = ({ messages }) => {
   // create a ref to help us with scrolling to bottom of chat
