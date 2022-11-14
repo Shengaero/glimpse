@@ -40,3 +40,9 @@
     align-items: center;
   }
 }
+
+@include media-breakpoint-down(md){
+  .chat-side-area{
+    display: none !important;
+  }
+}
