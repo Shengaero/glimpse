@@ -1,7 +1,12 @@
 import jwt, { verify } from 'jsonwebtoken';
 
 // set token secret and expiration date
-const secret = 'mysecretsshhhhh';
+const secret = process.env.NODE_ENV === 'production'? (() => {
+  const secretKey = process.env.SECRET_KEY;
+  if(!secretKey)
+    throw new Error('Cannot Run without SECRET_KEY env variable!');
+  return secretKey;
+})() :'mysecretsshhhhh';
 const expiration = '30d';
 
 const parseAuthHeaderToken = (token) => token.split(' ').pop().trim();
