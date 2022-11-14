@@ -14,11 +14,11 @@ function ChatSideAreaNavbar() {
         <Dropdown.Toggle className='gear-icon'>
           <i className="bi bi-gear-fill gear-icon"></i>
         </Dropdown.Toggle>
-        <Dropdown.Menu align="end">
-          <Dropdown.Item onClick={() => setShowCreateChat(true)}>
+        <Dropdown.Menu className='drop-menu' align="end">
+          <Dropdown.Item className='drop-menu-text' onClick={() => setShowCreateChat(true)}>
             Create Chat
           </Dropdown.Item>
-          <Dropdown.Item onClick={() => setShowJoinChat(true)}>
+          <Dropdown.Item className='drop-menu-text' onClick={() => setShowJoinChat(true)}>
             Join Chat
           </Dropdown.Item>
         </Dropdown.Menu>
