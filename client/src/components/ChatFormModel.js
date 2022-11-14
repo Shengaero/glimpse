@@ -136,14 +136,14 @@ export function DeleteChatModal({ show, setShow, chat }) {
         variables: { chatId: chat._id.toString() }
       });
 
-      setChatName('');
+      // setChatId('');
 
       // Reload the chat
       // Unfortunately until I can find a better solution to updating
       //the websocket to listen to the new chat, this will have to do.
       window.location.reload();
     } catch(err) {
-      console.log({...err});
+      console.log(err);
     }
   };
 

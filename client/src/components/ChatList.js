@@ -1,7 +1,6 @@
 import React from 'react';
 import { useMutation } from '@apollo/client';
 import { LEAVE_CHAT } from '../utils/mutations';
-import { Col, Row } from 'react-bootstrap';
 
 function ChatListItem({ isCurrent, chat, setChat }) {
   const [leaveChat] = useMutation(LEAVE_CHAT);
@@ -17,7 +16,7 @@ function ChatListItem({ isCurrent, chat, setChat }) {
   const handleLeaveChat = async (chatId) => {
     try {
       await leaveChat({
-        variables: { chatId: chatId.trim() }
+        variables: { chatId }
       });
 
       window.location.reload();
@@ -28,18 +27,13 @@ function ChatListItem({ isCurrent, chat, setChat }) {
 
   return (
     <li className="chat-list-item align-items-center justify-items-between p-2" onClick={handleOnClick}>
-      <Row>
-        <Col><span className="item-name">{chat.name}</span>
-        </Col>
-        <Col></Col>
-        <Col><button
-          className="btn btn-sm btn-danger"
-          onClick={() => handleLeaveChat(chat._id)}
-        >
-          Leave Chat
-        </button>
-        </Col>
-      </Row>
+      <span className="item-name mr-auto">{chat.name}</span>
+      <button
+        className="btn btn-sm btn-danger ml-auto"
+        onClick={() => handleLeaveChat(chat._id)}
+      >
+        Leave Chat
+      </button>
     </li>
   );
 }
