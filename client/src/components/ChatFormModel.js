@@ -147,17 +147,20 @@ export function DeleteChatModal({ show, setShow }) {
       await deleteChat({
         variables: { chatId: chatId.trim() }
       });
-      if(error) console.log('tttttt');
 
       setChatId('');
+      document.getElementById('errorText').innerText = '';
 
       // Reload the chat
       // Unfortunately until I can find a better solution to updating
       //the websocket to listen to the new chat, this will have to do.
       window.location.reload();
     } catch(err) {
+      document.getElementById('errorText').innerText = 'You do not have permission to delete this Chat';
       console.log(err);
     }
+
+
   };
 
   return (
@@ -178,6 +181,7 @@ export function DeleteChatModal({ show, setShow }) {
             onChange={onChatIdChange}
             placeholder="Enter a chat ID here..."
           />
+          <Form.Text id='errorText' className='text-danger'></Form.Text>
         </Form.Group>
       </Form>
     </ChatModal>
