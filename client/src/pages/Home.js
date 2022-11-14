@@ -6,6 +6,8 @@ import Modal from 'react-bootstrap/Modal';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER, CREATE_USER } from '../utils/mutations';
 import * as Auth from '../utils/auth';
+import logo from '../images/icon.png';
+import '../styles/Home.scss';
 
 const EmailField = ({ value, onChange }) => {
   return (
@@ -168,7 +170,8 @@ const Home = () => {
   }
 
   return (
-    <div className='jumbotron position-absolute top-50 start-50 translate-middle d-flex flex-column'>
+    <div className='jumbotron position-absolute top-50 start-50 translate-middle d-flex flex-column bg-#50577A'>
+      <img id='home-page-logo' src={logo} alt='glimpse-logo'/>
       <h1 className='display-1'>GLIMPSE</h1>
       <div className='text-center pt-3'>
         <Button variant="dark w-50" onClick={handleShowModal}>
