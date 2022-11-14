@@ -217,7 +217,9 @@ export default class ChatWebSocketServer {
             // Note that we pass the content, not the msg. The reason for
             //this is because we want to send the value provided to us
             //AFTER inserting it into the database, as this is validated.
-            sessionMap[sessionId].send(content, cws.userId, userName, chatId, createdAt);
+            sessionMap[sessionId].send(content, cws.userId, userName, chatId, createdAt).catch(err => {
+              console.log(err);
+            });
           }
           break;
       }
