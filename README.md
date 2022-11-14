@@ -21,9 +21,9 @@ A chat for when you just don't have the time to look around
 
 glimpse is a chat application developed for the purpose of wanted a simple chat app that doesn't overwhelm the user with too many unnecessary features.
 
-With this app, users will be able to create and account and create or join existing chatrooms with a just click of a button.
-
 Unlike our competitors, glimpse is not filled with random vanilla text throughout the app and it is very easy and gets straight to the point. Adding and joining chatrooms will never be this easy!
+
+With this app, users will be able to create and account and create or join existing chatrooms with a just click of a button.
 
 ## Usage
 
@@ -34,7 +34,9 @@ Alternatively, you can access our application via Heroku at https://glimpse-chat
 
 ## Testing
 
-Testing was done though Apollo graphql.
+Backend testing was done though Apollo graphql.
+
+Frontend testing was done locally via Google Chrome.
 
 For an easier testing experience, a dummy email and password is provided.
 * Email: test123@test.com
