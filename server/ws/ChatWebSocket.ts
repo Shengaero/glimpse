@@ -88,8 +88,12 @@ export default class ChatWebSocket {
   }
 
   private sendFrame<T extends WSPayload>(frame: T) {
-    return new Promise<void>((resolve, reject) => {
-      this._ws.send(JSON.stringify(frame), (err) => err ? reject(err) : resolve());
+    return new Promise<Boolean>((resolve, reject) => {
+      if(this.ws.readyState != WebSocket.OPEN) {
+        resolve(false);
+        return;
+      }
+      this._ws.send(JSON.stringify(frame), (err) => err ? reject(err) : resolve(true));
     });
   }
 

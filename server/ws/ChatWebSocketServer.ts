@@ -227,7 +227,7 @@ export default class ChatWebSocketServer {
         //error of some kind. We will try to send CLOSE_SERVER_ERROR (1011),
         //if we can.
         cws.close(CODES.CLOSE.SERVER_ERROR);
-      } finally {
+      } catch(err) { } finally {
         console.log(err);
       }
     }
