@@ -21,7 +21,7 @@
 
       .drop-menu-text {
         color: white;
-        
+
         &:hover {
           background-color: #6B728E;
         }
@@ -58,7 +58,7 @@
     justify-content: space-between;
     align-items: center;
 
-    .logout-btn{
+    .logout-btn {
       background-color: #474E68;
       border: none;
 
@@ -69,8 +69,8 @@
   }
 }
 
-@include media-breakpoint-down(lg){
-  .chat-side-area{
+@include media-breakpoint-down(lg) {
+  .chat-side-area {
     display: none !important;
   }
 }
