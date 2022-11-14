@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client';
 import { Col, Navbar, Button, Dropdown } from 'react-bootstrap';
 
 import { useChatWebSocket } from './ChatWebSocket';
+import { ChatModal } from './ChatFormModel';
 import { GET_CHAT } from '../utils/queries';
 
 // FIXME: This needs to look wayyyyyy better
@@ -84,6 +85,18 @@ const ChatTextArea = ({ chatId }) => {
   );
 };
 
+function GetChatIdDropdownItem({ chatId }) {
+  const [show, setShow] = useState(false);
+  return (
+    <>
+      <Dropdown.Item onClick={() => setShow(true)}>Get Chat ID</Dropdown.Item>
+      <ChatModal show={show} setShow={setShow} title="Invite people with this Chat ID" accept="Got It!">
+        <span className="align-self-center"><code>{chatId}</code></span>
+      </ChatModal>
+    </>
+  );
+}
+
 export default function Chat({ chatId, messages, setMessages }) {
   const { data } = useQuery(GET_CHAT, {
     variables: { chatId: chatId },
@@ -108,9 +121,7 @@ export default function Chat({ chatId, messages, setMessages }) {
             <i className="bi bi-three-dots-vertical"></i>
           </Dropdown.Toggle>
           <Dropdown.Menu align="end">
-            <Dropdown.Item href="#/action-1">Test</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Test</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Test</Dropdown.Item>
+            <GetChatIdDropdownItem chatId={chatId}/>
           </Dropdown.Menu>
         </Dropdown>
       </Navbar>

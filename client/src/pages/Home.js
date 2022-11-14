@@ -168,29 +168,32 @@ const Home = () => {
   }
 
   return (
-    <div className='jumbotron position-absolute top-50 start-50 translate-middle d-flex flex-column'>
-      <h1 className='display-1'>GLIMPSE</h1>
-      <div className='text-center pt-3'>
-        <Button variant="dark w-50" onClick={handleShowModal}>
-          Login
-        </Button>
+    <main className="home">
+      <div className="jumbotron d-flex flex-column">
+        <img id="home-page-logo" src="images/icon_512x512.png" alt="glimpse-logo" />
+        <h1 className="display-1 align-self-center">GLIMPSE</h1>
+        <div className="text-center pt-3 d-flex justify-content-around">
+          <Button variant="dark w-50" onClick={handleShowModal}>
+            Login
+          </Button>
+        </div>
+        <Modal show={showModal} onHide={handleCloseModal} centered>
+          <Modal.Body>
+            {(!creatingAccount)
+              ? <LoginForm />
+              : <SignupForm />
+            }
+          </Modal.Body>
+          <Modal.Footer>
+            <div className="d-grid gap-2 mx-auto col-10">
+              <Button variant="dark" onClick={() => setCreatingAccount(!creatingAccount)}>
+                {creatingAccount ? 'Login Instead' : 'Signup Instead'}
+              </Button>
+            </div>
+          </Modal.Footer>
+        </Modal>
       </div>
-      <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Body>
-          {(!creatingAccount)
-            ? <LoginForm />
-            : <SignupForm />
-          }
-        </Modal.Body>
-        <Modal.Footer>
-          <div className='d-grid gap-2 mx-auto col-10'>
-            <Button variant="dark" onClick={() => setCreatingAccount(!creatingAccount)}>
-              {creatingAccount ? 'Login Instead' : 'Signup Instead'}
-            </Button>
-          </div>
-        </Modal.Footer>
-      </Modal>
-    </div>
+    </main>
   );
 };
 
