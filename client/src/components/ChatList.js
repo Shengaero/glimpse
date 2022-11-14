@@ -1,6 +1,11 @@
 import React from 'react';
+import { useMutation } from '@apollo/client';
+import { LEAVE_CHAT } from '../utils/mutations';
 
 function ChatListItem({ isCurrent, chat, setChat }) {
+  const [leaveChat, {error}] = useMutation(LEAVE_CHAT);
+
+
   const handleOnClick = (event) => {
     event.preventDefault();
     // only set chat if it's not the current one
@@ -9,7 +14,15 @@ function ChatListItem({ isCurrent, chat, setChat }) {
     }
   };
   const handleLeaveChat = (chatId) => {
-    console.log(chatId);
+    try {
+      const { data } = leaveChat({
+        variables: { chatId }
+      });
+
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
