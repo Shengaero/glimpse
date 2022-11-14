@@ -63,7 +63,13 @@ export default function ChatPage() {
           wsURL={WS_URL}
           handleNewMessage={handleNewMessage}
         >
-          <NavbarMd />
+          <NavbarMd 
+          chats={data.me.chats}
+          currentChat={chat}
+          setChat={(chat) => {
+            setChat(chat);
+            setMessages([]);
+          }}/>
           <ChatSideArea
             chats={data.me.chats}
             currentChat={chat}
