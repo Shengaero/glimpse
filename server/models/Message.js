@@ -15,10 +15,16 @@ export const messageSchema = new Schema({
   createdAt: {
     type: Date,
     required: true,
-    default: () => Date.now(),
-    get: dateDisplay
+    default: Date.now(),
+    get: (timestamp) => dateDisplay(timestamp)
   }
-});
+},
+{
+  toJSON: {
+    getters: true
+  }
+}
+);
 
 export const Message = model('Message', messageSchema);
 
