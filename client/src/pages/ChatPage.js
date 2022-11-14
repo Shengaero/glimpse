@@ -81,6 +81,7 @@ export default function ChatPage() {
           />
           {chat ? (
             <Chat
+              userId={data.me._id}
               chatId={chat._id}
               messages={messages}
               setMessages={setMessages}

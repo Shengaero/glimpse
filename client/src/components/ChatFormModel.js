@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import { CREATE_CHAT, JOIN_CHAT } from '../utils/mutations';
+import { CREATE_CHAT, JOIN_CHAT, DELETE_CHAT } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 
 export function CreateChatModal({ show, setShow }) {
@@ -116,6 +116,54 @@ export function JoinChatModal({ show, setShow }) {
             value={chatId}
             onChange={onChatIdChange}
             placeholder="Enter a chat ID here..."
+          />
+        </Form.Group>
+      </Form>
+    </ChatModal>
+  );
+}
+
+export function DeleteChatModal({ show, setShow, chat }) {
+  const [chatName, setChatName] = useState('');
+  const [deleteChat] = useMutation(DELETE_CHAT);
+
+  const onChatNameChange = ({ target }) => setChatName(target.value);
+
+  const handleDeleteChat = async (event) => {
+    event.preventDefault();
+    try {
+      await deleteChat({
+        variables: { chatId: chat._id.toString() }
+      });
+
+      setChatName('');
+
+      // Reload the chat
+      // Unfortunately until I can find a better solution to updating
+      //the websocket to listen to the new chat, this will have to do.
+      window.location.reload();
+    } catch(err) {
+      console.log({...err});
+    }
+  };
+
+  return (
+    <ChatModal
+      show={show}
+      setShow={setShow}
+      title="Join Chat"
+      disableIf={chat.name !== chatName.trim()}
+      onConfirm={handleDeleteChat}
+      accept="Join"
+    >
+      <Form onSubmit={(event) => event.preventDefault()}>
+        <Form.Group>
+          <Form.Label>Chat ID</Form.Label>
+          <Form.Control
+            type="none"
+            value={chatName}
+            onChange={onChatNameChange}
+            placeholder="Type the name of the chat here to delete it."
           />
         </Form.Group>
       </Form>
