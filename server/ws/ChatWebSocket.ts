@@ -67,7 +67,7 @@ export default class ChatWebSocket {
   send(msg: String, userId: String, chatId: String, createdAt: Date) {
     return this.sendFrame({
       type: 'message',
-      createdAt: createdAt.getTime(),
+      createdAt: createdAt,
       msg, userId, chatId
     });
   }
