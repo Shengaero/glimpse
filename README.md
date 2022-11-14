@@ -8,10 +8,22 @@ A chat for when you just don't have the time to look around
 * [Questions](#questions)
 * [Credits](#credits)
 
+## Landing Page
+![alt text](./client/src/images/glimpse%20home%20page.png)
+
+## Signup/Login Feature
+![alt text](./client/src/images/glimpse%20signup-login.png)
+
+## Chat Page 
+![alt text](./client/src/images/glimpse%20chat%20page.png)
 
 ## Description
 
 glimpse is a chat application developed for the purpose of wanted a simple chat app that doesn't overwhelm the user with too many unnecessary features.
+
+With this app, users will be able to create and account and create or join existing chatrooms with a just click of a button.
+
+Unlike our competitors, glimpse is not filled with random vanilla text throughout the app and it is very easy and gets straight to the point. Adding and joining chatrooms will never be this easy!
 
 ## Usage
 
@@ -32,11 +44,11 @@ For an easier testing experience, a dummy email and password is provided.
 ## Questions
 
 If there are any questions about our application, please feel free to email any of us.
-* @gmail.com
+* jiangbrendon@gmail.com
+* anguyen780@gmail.com
 * bobbeekethdy@gmail.com
 * @gmail.com
-* @gmail.com
-* @gmail.com
+* KaidanGustave@yahoo.com
 
 ## Credits
 
