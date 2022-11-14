@@ -125,13 +125,10 @@ export async function deleteChat(_: any, args: DeleteChatArgs, context: AuthCont
     throw new AuthenticationError('You need to be logged in!');
 
   // first delete the chat
-  const chat = await Chat.findOne({
-    _id: args.chatId
+  const chat = await Chat.findOneAndDelete({
+    _id: args.chatId,
+    owner: context.user._id
   });
-
-  if(chat.owner._id.toString() !== context.user._id)
-    throw new ApolloError('Cannot delete chat, you do not own it!', 'UNAUTHORIZED');
-
 
   // if no chat was deleted, throw error
   if(!chat) {
@@ -140,8 +137,6 @@ export async function deleteChat(_: any, args: DeleteChatArgs, context: AuthCont
       'NOT_FOUND'
     );
   }
-
-  await chat.deleteOne();
 
   // cleanup users
   // await User.updateMany(
@@ -161,10 +156,6 @@ export async function deleteChat(_: any, args: DeleteChatArgs, context: AuthCont
     new: true
   });
 
-  await User.updateMany(
-    { _id: { $in: chat.users } },
-    { $pull: { chats: chat._id } }
-  );
 
   // then cleanup the messages
   await Message.deleteMany({ _id: { $in: chat.messages } });

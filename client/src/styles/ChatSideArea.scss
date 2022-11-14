@@ -6,27 +6,8 @@
     min-height: $y-border-element-height;
     color: white;
 
-    .gear-icon {
+    .bi {
       cursor: pointer;
-      background-color: #404258;
-      border: none;
-
-      &:hover {
-        background-color: #474E68;
-      }
-    }
-
-    .drop-menu {
-      background-color: #404258;
-
-      .drop-menu-text {
-        color: white;
-
-        &:hover {
-          background-color: #6B728E;
-        }
-      }
-
     }
   }
 
@@ -57,20 +38,5 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-
-    .logout-btn {
-      background-color: #474E68;
-      border: none;
-
-      &:hover {
-        background-color: #6B728E;
-      }
-    }
-  }
-}
-
-@include media-breakpoint-down(lg) {
-  .chat-side-area {
-    display: none !important;
   }
 }

@@ -3,7 +3,6 @@ import { useQuery } from '@apollo/client';
 import Chat from '../components/Chat';
 import ChatSideArea from '../components/ChatSideArea';
 import ChatWebSocketProvider from '../components/ChatWebSocket';
-import NavbarMd from '../components/NavbarMd';
 import { GET_ME } from '../utils/queries';
 import * as Auth from '../utils/auth';
 import { Navigate } from 'react-router-dom';
@@ -16,7 +15,7 @@ export default function ChatPage() {
   const [chat, setChat] = useState(null);
   const [messages, setMessages] = useState([]);
 
-  const handleNewMessage = ({ chatId, msg, userName, userId, createdAt }) => {
+  const handleNewMessage = ({ chatId, msg, userId, createdAt }) => {
     // if the chatId the of the message matches the ID of the currently viewed chat
     if(chatId === chat?._id) {
       // find the index of the user that is sending the message
@@ -24,7 +23,7 @@ export default function ChatPage() {
       // construct a new message object
       const newMessage = {
         content: msg,
-        author: chat.users[i] || userName,
+        author: chat.users[i],
         createdAt: createdAt
       };
       // set messages with the new message at the top
@@ -63,14 +62,6 @@ export default function ChatPage() {
           wsURL={WS_URL}
           handleNewMessage={handleNewMessage}
         >
-          <NavbarMd
-            chats={data.me.chats}
-            currentChat={chat}
-            setChat={(chat) => {
-              setChat(chat);
-              setMessages([]);
-            }}
-          />
           <ChatSideArea
             chats={data.me.chats}
             currentChat={chat}
@@ -81,7 +72,6 @@ export default function ChatPage() {
           />
           {chat ? (
             <Chat
-              userId={data.me._id}
               chatId={chat._id}
               messages={messages}
               setMessages={setMessages}

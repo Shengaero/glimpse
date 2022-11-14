@@ -42,7 +42,7 @@ export default function ChatList({ chats, currentChat, setChat }) {
   return (
     <div className="d-flex flex-column flex-fill chat-list">
       <ol className="ps-0 py-0 mb-0 flex-fill">
-        {chats?.map((chat, index) => (
+        {chats.map((chat, index) => (
           <ChatListItem
             key={`chat-${index}`}
             isCurrent={chat._id === currentChat._id} // TODO: Do something with this

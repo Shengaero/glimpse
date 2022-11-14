@@ -123,48 +123,65 @@ export function JoinChatModal({ show, setShow }) {
   );
 }
 
-export function DeleteChatModal({ show, setShow, chat }) {
-  const [chatName, setChatName] = useState('');
-  const [deleteChat] = useMutation(DELETE_CHAT);
+export function DeleteChatModal({ show, setShow }) {
+  const [chatId, setChatId] = useState('');
+  const [deleteChat, { error }] = useMutation(DELETE_CHAT, {
+    update(cache, { data: { deleteChat } }) {
+      try {
+        const { me } = cache.readQuery(GET_ME);
+        cache.writeQuery({
+          query: GET_ME,
+          data: { me: { ...me, chats: [...me.chats.filter((chat) => chat !== deleteChat)] } }
+        });
+      } catch(err) {
+        console.log(err);
+      }
+    }
+  });
 
-  const onChatNameChange = ({ target }) => setChatName(target.value);
 
+  const onChatIdChange = ({ target }) => setChatId(target.value);
   const handleDeleteChat = async (event) => {
     event.preventDefault();
     try {
       await deleteChat({
-        variables: { chatId: chat._id.toString() }
+        variables: { chatId: chatId.trim() }
       });
 
-      // setChatId('');
+      setChatId('');
+      document.getElementById('errorText').innerText = '';
 
       // Reload the chat
       // Unfortunately until I can find a better solution to updating
       //the websocket to listen to the new chat, this will have to do.
       window.location.reload();
     } catch(err) {
+      document.getElementById('errorText').innerText = 'You do not have permission to delete this Chat';
       console.log(err);
     }
+
+
   };
 
   return (
     <ChatModal
       show={show}
       setShow={setShow}
-      title="Join Chat"
-      disableIf={chat.name !== chatName.trim()}
+      title="Delete Chat"
+      disableIf={chatId.trim().length < 1}
       onConfirm={handleDeleteChat}
-      accept="Join"
+      accept="Delete"
     >
       <Form onSubmit={(event) => event.preventDefault()}>
         <Form.Group>
           <Form.Label>Chat ID</Form.Label>
           <Form.Control
             type="none"
-            value={chatName}
-            onChange={onChatNameChange}
-            placeholder="Type the name of the chat here to delete it."
+            value={chatId}
+            onChange={onChatIdChange}
+            placeholder="Enter a chat ID here..."
           />
+          <Form.Text id='errorText' className='text-danger'></Form.Text>
         </Form.Group>
       </Form>
     </ChatModal>
@@ -184,7 +201,7 @@ export const ChatModal = ({
     <Modal.Header closeButton>
       <Modal.Title>{title}</Modal.Title>
     </Modal.Header>
-    <Modal.Body className="d-flex flex-column">
+    <Modal.Body>
       {children}
     </Modal.Body>
     <Modal.Footer>
