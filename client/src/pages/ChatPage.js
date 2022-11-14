@@ -16,7 +16,7 @@ export default function ChatPage() {
   const [chat, setChat] = useState(null);
   const [messages, setMessages] = useState([]);
 
-  const handleNewMessage = ({ chatId, msg, userId, createdAt }) => {
+  const handleNewMessage = ({ chatId, msg, userName, userId, createdAt }) => {
     // if the chatId the of the message matches the ID of the currently viewed chat
     if(chatId === chat?._id) {
       // find the index of the user that is sending the message
@@ -24,7 +24,7 @@ export default function ChatPage() {
       // construct a new message object
       const newMessage = {
         content: msg,
-        author: chat.users[i],
+        author: chat.users[i] || userName,
         createdAt: createdAt
       };
       // set messages with the new message at the top

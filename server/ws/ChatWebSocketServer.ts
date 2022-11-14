@@ -60,7 +60,7 @@ export default class ChatWebSocketServer {
       this.subscribeWebSocketToChat(cws, chatId.toString());
     });
 
-    cws.onMessage(data => this.handleOnMessage(data, cws));
+    cws.onMessage(data => this.handleOnMessage(data, user.name, cws));
     cws.onClose(async code => {
       console.log(`Client closed connection with code: ${code}!`);
       const user = await User.findById(userId);
@@ -177,7 +177,7 @@ export default class ChatWebSocketServer {
     return verified['data']._id as string;
   }
 
-  private async handleOnMessage(data: RawData, cws: ChatWebSocket) {
+  private async handleOnMessage(data: RawData, userName: String, cws: ChatWebSocket) {
     try {
       let command: WSPayload;
       try {
@@ -217,7 +217,9 @@ export default class ChatWebSocketServer {
             // Note that we pass the content, not the msg. The reason for
             //this is because we want to send the value provided to us
             //AFTER inserting it into the database, as this is validated.
-            sessionMap[sessionId].send(content, cws.userId, chatId, createdAt);
+            sessionMap[sessionId].send(content, cws.userId, userName, chatId, createdAt).catch(err => {
+              console.log(err);
+            });
           }
           break;
       }
@@ -227,7 +229,7 @@ export default class ChatWebSocketServer {
         //error of some kind. We will try to send CLOSE_SERVER_ERROR (1011),
         //if we can.
         cws.close(CODES.CLOSE.SERVER_ERROR);
-      } finally {
+      } catch(err) { } finally {
         console.log(err);
       }
     }
