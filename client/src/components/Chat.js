@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { Col, Navbar, Button, Dropdown } from 'react-bootstrap';
 
 import { useChatWebSocket } from './ChatWebSocket';
-import { ChatModal } from './ChatFormModel';
+import { ChatModal, DeleteChatModal } from './ChatFormModel';
 import { GET_CHAT } from '../utils/queries';
+import { LEAVE_CHAT } from '../utils/mutations';
 
 // FIXME: This needs to look wayyyyyy better
 const ChatMessage = ({ author, content, createdAt }) => (
@@ -94,7 +95,45 @@ function GetChatIdDropdownItem({ chatId }) {
   );
 }
 
-export default function Chat({ chatId, messages, setMessages }) {
+function DeleteChatDropdownItem({ chat }) {
+  const [show, setShow] = useState(false);
+  return (
+    <>
+      <Dropdown.Item onClick={() => setShow(true)}>Delete Chat</Dropdown.Item>
+      <DeleteChatModal show={show} setShow={setShow} chat={chat} />
+    </>
+  );
+}
+
+function LeaveChatDropdownItem({ chat }) {
+  const [show, setShow] = useState(false);
+  const [leaveChat] = useMutation(LEAVE_CHAT);
+
+  const handleLeaveChat = async (event) => {
+    event.preventDefault();
+
+    try {
+      await leaveChat({
+        variables: { chatId: chat._id }
+      });
+
+      window.location.reload();
+    } catch(err) {
+      console.log(err);
+    }
+  };
+
+  return (
+    <>
+      <Dropdown.Item onClick={() => setShow(true)}>Leave Chat</Dropdown.Item>
+      <ChatModal show={show} setShow={setShow} title="Leave Chat" accept="Yes" onConfirm={handleLeaveChat}>
+        Are you sure you want to leave {chat.name}?
+      </ChatModal>
+    </>
+  );
+}
+
+export default function Chat({ userId, chatId, messages, setMessages }) {
   const { data } = useQuery(GET_CHAT, {
     variables: { chatId: chatId },
     fetchPolicy: 'network-only'
@@ -113,14 +152,19 @@ export default function Chat({ chatId, messages, setMessages }) {
         <span>
           {data?.chat?.name || 'Loading...'} {/* FIXME: Make this look better while loading */}
         </span>
-        <Dropdown>
-          <Dropdown.Toggle >
-            <i className="bi bi-three-dots-vertical"></i>
-          </Dropdown.Toggle>
-          <Dropdown.Menu align="end">
-            <GetChatIdDropdownItem chatId={chatId}/>
-          </Dropdown.Menu>
-        </Dropdown>
+        {data ? (
+          <Dropdown>
+            <Dropdown.Toggle >
+              <i className="bi bi-three-dots-vertical"></i>
+            </Dropdown.Toggle>
+            <Dropdown.Menu align="end">
+              <GetChatIdDropdownItem chatId={chatId} />
+              {data.chat.owner._id === userId ? (
+                <DeleteChatDropdownItem chat={data.chat} />
+              ) : (<LeaveChatDropdownItem chat={data.chat} />)}
+            </Dropdown.Menu>
+          </Dropdown>
+        ) : (<></>)}
       </Navbar>
       {data ? (
         <>

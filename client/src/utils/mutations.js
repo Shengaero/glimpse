@@ -63,7 +63,7 @@ export const JOIN_CHAT = gql`
 `;
 
 export const DELETE_CHAT = gql`
-  mutation deleteChat($chatId: String!) {
+  mutation deleteChat($chatId: ID!) {
     deleteChat(chatId: $chatId) {
       _id
       name
@@ -72,7 +72,7 @@ export const DELETE_CHAT = gql`
 `;
 
 export const LEAVE_CHAT = gql`
-  mutation leaveChat($chatId: String!) {
+  mutation leaveChat($chatId: ID!) {
     leaveChat(chatId: $chatId) {
       _id
       name
