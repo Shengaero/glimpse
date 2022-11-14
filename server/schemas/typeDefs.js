@@ -219,9 +219,26 @@ type Mutation {
   **Possible Errors**
 
   - UNAUTHENTICATED: The request maker was not [authenticated](Auth).
-  - NOT_FOUND: The [Chat](Chat) to delete was not found.
+  - NOT_FOUND: The [Chat](Chat) to join was not found.
   """
-  joinChat(chatId: ID!): Chat
+  joinChat(
+    "The ID of the [Chat](Chat) to join."
+    chatId: ID!
+  ): Chat
+
+  """
+  Removes the currently [authenticated](Auth) [User](User) from a [Chat](Chat)
+  matching the provided chatId.
+
+  **Possible Errors**
+
+  - UNAUTHENTICATED: The request maker was not [authenticated](Auth).
+  - NOT_FOUND: The [Chat](Chat) to leave was not found.
+  """
+  leaveChat(
+    "The ID of the [Chat](Chat) to leave."
+    chatId: ID!
+  ): Chat
 }
 `;
 

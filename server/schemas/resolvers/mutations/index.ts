@@ -73,8 +73,8 @@ export async function createChat(_: any, args: CreateChatArgs, context: AuthCont
     throw new AuthenticationError('You need to be logged in!');
   let chat = await Chat.create({
     name: args.name,
-    owner: context.user._id,
-    users: [context.user._id]
+    owner: context.user._id, // creating user is owner
+    users: [context.user._id] // also a user in the channel of course
   });
 
   // We need to try catch here in case we encounter an error so we can "rollback"
@@ -113,7 +113,7 @@ export async function createMessage(_: any, args: CreateMessageArgs, context: Au
     // update this chat adding the message
     await chat.addMessage(newMessage._id);
   } catch(err) {
-    await newMessage.delete();
+    await newMessage.deleteOne();
     throw err;
   }
 
@@ -137,6 +137,12 @@ export async function deleteChat(_: any, args: DeleteChatArgs, context: AuthCont
       'NOT_FOUND'
     );
   }
+
+  // cleanup users
+  await User.updateMany(
+    { _id: { $in: chat.users } },
+    { chats: { $pull: chat._id } }
+  );
 
   // then cleanup the messages
   await Message.deleteMany({ _id: { $in: chat.messages } });
@@ -174,7 +180,7 @@ export async function deleteMessage(_: any, { chatId, messageId }: DeleteMessage
   //update fails, we need to "rollback" and readd the message.
   try {
     // delete the message
-    await message.delete();
+    await message.deleteOne();
   } catch(err) {
     await chat.updateOne({ $push: { messages: message._id } });
     throw err;
@@ -187,17 +193,9 @@ export async function joinChat(_: any, { chatId }: JoinChatArgs, context: AuthCo
   if(!context.user)
     throw new AuthenticationError('You need to be logged in!');
 
-  const updateResults = await User.updateOne(
-    { _id: context.user._id },
-    { $addToSet: { chats: chatId } }
-  );
-
-  if(updateResults.modifiedCount < 1)
-    throw new ApolloError(`Chat with ID '${chatId}' not found!`, 'NOT_FOUND');
-
   // find and update the chat, we need this data back
   //so we can render it on the client's end
-  return await Chat.findOneAndUpdate(
+  const chat = await Chat.findOneAndUpdate(
     { _id: chatId },
     { $addToSet: { users: context.user._id } },
     { new: true }
@@ -211,4 +209,47 @@ export async function joinChat(_: any, { chatId }: JoinChatArgs, context: AuthCo
       path: 'author'
     }
   });
+
+  if(!chat)
+    throw new ApolloError(`Chat with ID '${chatId}' not found!`, 'NOT_FOUND');
+
+  // update user in try catch incase we need to "rollback"
+  try {
+    await User.updateOne(
+      { _id: context.user._id },
+      { $addToSet: { chats: chat._id } }
+    );
+  } catch(err) {
+    await chat.updateOne({ $pull: { users: context.user._id } });
+    throw err;
+  }
+
+  return chat.toJSON();
+}
+
+export async function leaveChat(_: any, { chatId }: JoinChatArgs, context: AuthContext) {
+  if(!context.user)
+    throw new AuthenticationError('You need to be logged in!');
+
+  const chat = await Chat.findOneAndUpdate(
+    { _id: chatId, users: context.user._id },
+    { $pull: { users: context.user._id } },
+    { new: true }
+  );
+
+  if(!chat)
+    throw new ApolloError(`Chat with ID '${chatId}' not found!`, 'NOT_FOUND');
+
+  // update user in try catch incase we need to "rollback"
+  try {
+    await User.updateOne(
+      { _id: context.user._id },
+      { $pull: { chats: chat._id } }
+    );
+  } catch(err) {
+    await chat.updateOne({ $addToSet: { users: context.user._id } });
+    throw err;
+  }
+
+  return chat.toJSON();
 }
