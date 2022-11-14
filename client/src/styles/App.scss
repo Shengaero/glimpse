@@ -9,9 +9,11 @@
   }
 }
 
+
 $y-border-element-height: 50px;
 
 @import './Chat.scss';
 @import './ChatList.scss';
 @import './ChatSideArea.scss';
-@import './NavbarMd.scss'
+@import './NavbarMd.scss';
+@import './Home.scss';

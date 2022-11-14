@@ -136,7 +136,7 @@ export const ChatModal = ({
     <Modal.Header closeButton>
       <Modal.Title>{title}</Modal.Title>
     </Modal.Header>
-    <Modal.Body>
+    <Modal.Body className="d-flex flex-column">
       {children}
     </Modal.Body>
     <Modal.Footer>
