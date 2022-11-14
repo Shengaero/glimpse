@@ -6,8 +6,6 @@ import Modal from 'react-bootstrap/Modal';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER, CREATE_USER } from '../utils/mutations';
 import * as Auth from '../utils/auth';
-import logo from '../images/icon.png';
-import '../styles/Home.scss';
 
 const EmailField = ({ value, onChange }) => {
   return (
@@ -171,10 +169,10 @@ const Home = () => {
 
   return (
     <main className="home">
-      <div className='jumbotron d-flex flex-column'>
-        <img id='home-page-logo' src={logo} alt='glimpse-logo' />
-        <h1 className='display-1'>GLIMPSE</h1>
-        <div className='text-center pt-3'>
+      <div className="jumbotron d-flex flex-column">
+        <img id="home-page-logo" src="images/icon_512x512.png" alt="glimpse-logo" />
+        <h1 className="display-1 align-self-center">GLIMPSE</h1>
+        <div className="text-center pt-3 d-flex justify-content-around">
           <Button variant="dark w-50" onClick={handleShowModal}>
             Login
           </Button>
@@ -187,7 +185,7 @@ const Home = () => {
             }
           </Modal.Body>
           <Modal.Footer>
-            <div className='d-grid gap-2 mx-auto col-10'>
+            <div className="d-grid gap-2 mx-auto col-10">
               <Button variant="dark" onClick={() => setCreatingAccount(!creatingAccount)}>
                 {creatingAccount ? 'Login Instead' : 'Signup Instead'}
               </Button>
