@@ -14,7 +14,9 @@ const ChatMessage = ({ author, content, createdAt }) => {
   return (
     <div className="message">
       <div className="message-stub">
-        <span className="message-user me-2">{author.name}</span>
+        <span className="message-user me-2">
+          {typeof author === 'string' ? author : (author?.name ? author.name : 'Unknown User')}
+        </span>
         <div className="message-time">
           <span>{dateDisplay(createAtDate)}</span>
         </div>
