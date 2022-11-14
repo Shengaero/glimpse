@@ -4,14 +4,23 @@ function ChatListItem({ isCurrent, chat, setChat }) {
   const handleOnClick = (event) => {
     event.preventDefault();
     // only set chat if it's not the current one
-    if(!isCurrent) {
+    if (!isCurrent) {
       setChat(chat);
     }
+  };
+  const handleLeaveChat = (chatId) => {
+    console.log(chatId);
   };
 
   return (
     <li className="chat-list-item align-items-center p-2" onClick={handleOnClick}>
       <span className="item-name">{chat.name}</span>
+      <button
+        className="btn btn-sm btn-danger ml-auto"
+        onClick={() => handleLeaveChat(chat._id)}
+      >
+        X
+      </button>
     </li>
   );
 }

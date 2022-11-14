@@ -17,8 +17,8 @@ function ChatSideAreaNavbar() {
           <Dropdown.Item onClick={() => setShowCreateChat(true)}>
             Create Chat
           </Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Later in the future</Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Just a placeholder for now</Dropdown.Item>
+          <Dropdown.Item href="#/action-2">Delete Chat</Dropdown.Item>
+          <Dropdown.Item href="#/action-3">Delete Chat</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
       <CreateChatModal show={showCreateChat} setShow={setShowCreateChat} />
