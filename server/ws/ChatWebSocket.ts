@@ -64,11 +64,11 @@ export default class ChatWebSocket {
     }
   }
 
-  send(msg: String, userId: String, chatId: String, createdAt: Date) {
+  send(msg: String, userId: String, userName: String, chatId: String, createdAt: Date) {
     return this.sendFrame({
       type: 'message',
       createdAt: createdAt.getTime(),
-      msg, userId, chatId
+      userName, msg, userId, chatId
     });
   }
 
@@ -88,8 +88,12 @@ export default class ChatWebSocket {
   }
 
   private sendFrame<T extends WSPayload>(frame: T) {
-    return new Promise<void>((resolve, reject) => {
-      this._ws.send(JSON.stringify(frame), (err) => err ? reject(err) : resolve());
+    return new Promise<Boolean>((resolve, reject) => {
+      if(this.ws.readyState != WebSocket.OPEN) {
+        resolve(false);
+        return;
+      }
+      this._ws.send(JSON.stringify(frame), (err) => err ? reject(err) : resolve(true));
     });
   }
 
